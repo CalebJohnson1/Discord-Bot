@@ -3,3 +3,5 @@ venv
 .vscode
 .env.txt
 token.txt
+database.sqlite
+database.db.sqbpro
