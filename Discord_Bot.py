@@ -36,9 +36,6 @@ async def on_ready():
     except Exception as E:
         print(E)
 
-    except ConnectionResetError as r:
-        print(r)
-
 
 extensions = ['Cogs.Balance',
               'Cogs.Intents',
@@ -60,8 +57,12 @@ if __name__ == '__main__':
 
 @client.event
 async def on_message(message):
+    if message.author == client.user:
+        return
+
     if message.author.bot:
         return
+        
     if isinstance(message.channel, discord.DMChannel):
         return
 

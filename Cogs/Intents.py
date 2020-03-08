@@ -10,8 +10,12 @@ class Intents(commands.Cog, name='Intents'):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        if message.author == self.bot.user:
+            return
+
         if message.author.bot:
             return
+            
         if isinstance(message.channel, discord.DMChannel):
             return
 

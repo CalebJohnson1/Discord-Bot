@@ -86,17 +86,13 @@ class Fun(commands.Cog, name="Fun.py"):
             return
 
         shinies = 0
-        pokerus = 0
 
-        for encounters in range(int(amount)):
-            if random.randrange(4096) == 1:
+        for amount in range(int(amount)):
+            if random.randint(1, 4096) <= 2:
                 shinies += 1
-            if random.randrange(21845) == 1:
-                pokerus += 1
 
-        embed = discord.Embed(title=f"Total {pokemon.title()} encountered: {int(amount):,}",
-                              description=f"Total Shinies: {int(shinies):,}\n"
-                                          f"Total Pokérus: {int(pokerus):,}\n",
+        embed = discord.Embed(title=f"Total {pokemon.title()} encountered: {int(amount+1):,}",
+                              description=f"Total Shinies: {int(shinies):,}",
                               color=0xc0d4ff)
         await ctx.send(embed=embed)
 
