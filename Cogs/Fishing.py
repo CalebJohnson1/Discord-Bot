@@ -87,7 +87,8 @@ class Fishing(commands.Cog, name="Fishing.py"):
     @fish.error
     async def fish_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(f"Please wait **{round(error.retry_after, 2)}** seconds to fish again.")
+            errormsg = await ctx.send(f"Please wait **{round(error.retry_after, 2)}** seconds to fish again.")
+            await discord.Message.delete(errormsg, delay=5)
 
         print(error)
 

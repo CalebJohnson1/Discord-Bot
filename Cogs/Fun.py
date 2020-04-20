@@ -2,7 +2,6 @@ from discord.ext import commands
 import discord
 import random
 
-
 class Fun(commands.Cog, name="Fun.py"):
     def __init__(self, bot):
         self.bot = bot
@@ -40,29 +39,29 @@ class Fun(commands.Cog, name="Fun.py"):
 
         member = ctx.author.display_name
         responses = [
-            f"Certainly, {member}!",
-            f"It is decidedly so, {member}",
-            f"Without a doubt, {member}",
-            f"Yes - definitely, {member}",
-            f"You may rely on it, {member}",
-            f"As I see it, yes, {member}",
-            f"Most likely, {member}",
-            f"Outlook good, {member}",
-            f"Yes, {member}",
-            f"No, {member}",
-            f"Signs point to yes, {member}",
-            f"Reply hazy, try again, {member}",
-            f"Ask again later, {member}",
-            f"Better not tell you now, {member}",
-            f"Cannot predict now, {member}",
-            f"Concentrate and ask again, {member}",
-            f"Don't count on it, {member}",
-            f"My reply is no, {member}",
-            f"My sources say no, {member}",
-            f"Outlook not so good, {member}",
-            f"Very doubtful, {member}"]
+            "Certainly!",
+            "It is decidedly so",
+            "Without a doubt",
+            "Yes - definitely",
+            "You may rely on it",
+            "As I see it, yes",
+            "Most likely",
+            "Outlook good",
+            "Yes",
+            "No",
+            "Signs point to yes",
+            "Reply hazy, try again",
+            "Ask again later",
+            "Better not tell you now",
+            "Cannot predict now",
+            "Concentrate and ask again",
+            "Don't count on it",
+            "My reply is no",
+            "My sources say no",
+            "Outlook not so good",
+            "Very doubtful"]
 
-        await ctx.send(f"{random.choice(responses)}")
+        await ctx.send(f"{random.choice(responses)}, {member}")
 
     @commands.command(aliases=["generateusername", "randomname", "randname", "username"])
     async def generate(self, ctx):
@@ -88,7 +87,7 @@ class Fun(commands.Cog, name="Fun.py"):
         shinies = 0
 
         for amount in range(int(amount)):
-            if random.randint(1, 4096) <= 2:
+            if random.randint(1, 4096) == 1:
                 shinies += 1
 
         embed = discord.Embed(title=f"Total {pokemon.title()} encountered: {int(amount+1):,}",
@@ -98,13 +97,14 @@ class Fun(commands.Cog, name="Fun.py"):
 
     @encounter.error
     async def encountererror(self, ctx, error):
-        await ctx.send('Please specify an amount + name to encounter.\nUsage: **m!encounter <amount> <pokemon>**')
+        errormsg = await ctx.send('Please specify an amount + name to encounter.\nUsage: **m!encounter <amount> <pokemon>**')
+        await discord.Message.delete(errormsg, delay=5)
         print(error)
 
     @commands.command()
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def fakebal(self, ctx):
-        balance = random.randint(1000000, 100000000)
+        balance = random.randint(1000000, 200000000)
         embed = discord.Embed(title=f"{ctx.author.display_name}'s balance:",
                               description=f"You currently have {balance:,} credits.",
                               color=0x00ae86)
@@ -116,20 +116,22 @@ class Fun(commands.Cog, name="Fun.py"):
     @fakebal.error
     async def fakebal_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to use this command.")
+            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to use this command.")
+            await discord.Message.delete(errormsg, delay=5)
 
     @commands.command()
     async def catch(self, ctx, *, pokemon):
         await ctx.send(
-            f"Congratulations {ctx.author.mention}! You caught a level {random.randint(1, 41)} Shiny {pokemon.title()}!")
+            f"Congratulations {ctx.author.mention}! You caught a level {random.randint(1, 42)} Shiny {pokemon.title()}!")
 
     @catch.error
     async def catch_error(self, ctx, error):
-        await ctx.send("Please input the name of a pokemon to catch.")
+        errormsg = await ctx.send("Please input the name of a pokemon to catch.")
+        await discord.Message.delete(errormsg, delay=5)
         print(error)
 
     @commands.command()
-    async def redeem(self, ctx, pokemon):
+    async def redeem(self, ctx, *, pokemon):
         await ctx.send(f"You have been given a Shiny {pokemon.title()}!")
 
     @commands.command()
@@ -187,7 +189,8 @@ class Fun(commands.Cog, name="Fun.py"):
     @hug.error
     async def hug_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.BadArgument):
-            await ctx.send("Please specify another user to hug.\nUsage: **m!hug <user>**")
+            errormsg = await ctx.send("Please specify another user to hug.\nUsage: **m!hug <user>**")
+            await discord.Message.delete(errormsg, delay=5)
 
     @commands.command()
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -228,10 +231,12 @@ class Fun(commands.Cog, name="Fun.py"):
     @kiss.error
     async def kiss_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.BadArgument):
-            await ctx.send("Please specify another user to kiss.\nUsage: **m!kiss <user>**")
+            errormsg = await ctx.send("Please specify another user to kiss.\nUsage: **m!kiss <user>**")
+            await discord.Message.delete(errormsg, delay=5)
 
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(f"Please {ctx.author.display_name}, take two seconds to breathe.")
+            errormsg = await ctx.send(f"Please {ctx.author.display_name}, take two seconds to breathe.")
+            await discord.Message.delete(errormsg, delay=5)
 
     @commands.command(aliases=["backward", "backwards"])
     async def reverse(self, ctx, *, message = None):
@@ -240,6 +245,40 @@ class Fun(commands.Cog, name="Fun.py"):
             return
 
         await ctx.send(message[::-1])
+
+    @commands.command()
+    async def pokemon(self, ctx):
+        hp = random.randint(0, 31)
+        attack = random.randint(0, 31)
+        defense = random.randint(0, 31)
+        spatk = random.randint(0, 31)
+        spdef = random.randint(0, 31)
+        speed = random.randint(0, 31)
+        totalIV = round((hp + attack + defense + spatk + spdef + speed) * 0.53764, 2)
+
+        if totalIV == 50 or totalIV == 0 or totalIV == 100:
+            totalIV = round((hp + attack + defense + spatk + spdef + speed) * 0.53764)
+
+        level = random.randint(1, 42)
+        levelxp = level*60
+
+        embed = discord.Embed(title=f":star: Level {level} {ctx.author.display_name}", description=f"1/{levelxp}XP\n"
+                                           f"**Type:** Depressed\n"
+                                           f"**Nature:** Lonely\n"
+                                           f"**HP:** 42 - IV: {hp}/31\n"
+                                           f"**Attack:** 42 - IV: {attack}/31\n"
+                                           f"**Defense:** 42 - IV: {defense}/31\n"
+                                           f"**Sp. Atk:** 42 - IV: {spatk}/31\n"
+                                           f"**Sp. Def:** 42 - IV: {spdef}/31\n"
+                                           f"**Speed:** 42 - IV: {speed}/31\n"
+                                           f"**Total IV %:** {totalIV}%", color=0xc0d4ff)
+
+        embed.set_author(name="Professor Oak", icon_url="https://images-ext-2.discordapp.net/external/oMthNLlPT-Sjg-4nanyqxHDBH4iE7N8CVUh0WFjlxAc/https/i.imgur.com/8ZpM4tb.jpg")
+        embed.set_thumbnail(url=ctx.author.avatar_url)
+        embed.set_image(url=ctx.author.avatar_url)
+        embed.set_footer(text="Selected Pokémon: 1/1 - Use p!back and p!next to cycle through your pokémon!")
+
+        await ctx.send(embed=embed)
 
 
 def setup(bot):

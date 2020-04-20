@@ -19,11 +19,11 @@ class Intents(commands.Cog, name='Intents'):
         if isinstance(message.channel, discord.DMChannel):
             return
 
-        suffix = ["helpful", "may"]
+        suffix = ["may"]
 
         terms = ["hows it goin", "hows it going", "hows it hanging", "hows it hangin",
                  "hows it going helpful", "how are you", "how is your day", "hows your day"]
-        someprefixes = ["give me", "give us", "gimme", "i need", "tell me", "i want", "needs"]
+        # someprefixes = ["give me", "give us", "gimme", "i need", "tell me", "i want", "needs"]
 
         for word in terms:
             for wordsuffix in suffix:
@@ -33,7 +33,7 @@ class Intents(commands.Cog, name='Intents'):
                     await message.channel.send(f"{random.choice(choices)}")
                     return
 
-        pokefacts = ["pokemon", "pokémon"]
+        """pokefacts = ["pokemon", "pokémon"]
         pokefactss = ["fact"]
         with open("PokemonFacts.txt", "r") as f:
             pokemonfacts = random.choice(f.readlines())
@@ -86,7 +86,7 @@ class Intents(commands.Cog, name='Intents'):
             for niceee in suffix:
                 if message.content.lower().count(nicee) and message.content.lower().count(niceee):
                     await message.channel.send(f"Thank you, {message.author.display_name.title()}!")
-                    return
+                    return"""
 
 
 def setup(bot):

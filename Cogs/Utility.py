@@ -3,9 +3,8 @@ from discord.ext import commands
 import random
 
 tips = ["Tip: Did you know that you can send suggestions using m!suggest <message>?",
-        "Tip: Instead of using m!fact, you can say: 'Hey May, tell me a fact!'\nThis also works with quotes and jokes.",
-        "Tip: Ask May how her day is going! She'll respond to messages such as: 'Hey May, hows your day going?', or 'great job may!'",
-        "Tip: You can also use may! <command> as a prefix instead of m!"]
+        "Tip: Ask May how her day is going! She'll respond to messages such as: 'Hey May, hows it going?', or 'great job may!'",
+        "Tip: You can also use may!<command> as a prefix instead of m!"]
 
 
 class Utility(commands.Cog, name="Utility.py"):
@@ -18,6 +17,8 @@ class Utility(commands.Cog, name="Utility.py"):
             command = command.lower()
 
         help_icon = "https://cdn.discordapp.com/emojis/678432297896116226.png?v=1"
+
+        # Recode all this so auto detects the cmd you specify. No need to have an if for each diff cmd.
 
         if command == "info":
             embed = discord.Embed(title="Info Help", description="Gives information on a user.\n"
@@ -32,7 +33,7 @@ class Utility(commands.Cog, name="Utility.py"):
             embed.set_author(name="Help", icon_url=help_icon)
             await ctx.send(embed=embed)
             return
-
+    
         if command == "members":
             embed = discord.Embed(title="Members Help", description="Displays how many members are in the server.\n"
                                                                     "Usage: **m!members**", color=0xc0d4ff)
@@ -179,12 +180,18 @@ class Utility(commands.Cog, name="Utility.py"):
             await ctx.send(embed=embed)
             return
 
+        if command == "guildicon" or command == "gi":
+            embed = discord.Embed(title="", description="Sends an embed of the current guild icon.\n"
+                                                        "Usage: **m!gi** or **m!guildicon**")
+            await ctx.send(embed=embed)
+            return
+
         embed = discord.Embed(title="**Commands**",
                               description="Use **m!help <command>** to get information on a command.",
                               color=0xc0d4ff)
         embed.add_field(name="Information", value="m!info, m!avatar, m!members",
                         inline=False)
-        embed.add_field(name="Utility", value="m!ping, m!suggest, m!help")
+        embed.add_field(name="Utility", value="m!help, m!suggest, m!ping, m!guildicon")
         embed.add_field(name="Economy", value="m!credits, m!points", inline=False)
         embed.add_field(name="Star Wars", value="m!race, m!fish", inline=False)
         embed.add_field(name="Gambling", value="Coming Soon", inline=False)
@@ -197,17 +204,15 @@ class Utility(commands.Cog, name="Utility.py"):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["suggestion"])
-    @commands.cooldown(1, 120, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def suggest(self, ctx, *, message=None):
         if message is None:
             await ctx.send("Please input a message to suggest.\nUsage: **m!suggest <message>**")
             return
-
-        embed = discord.Embed(description=message.title(), color=0xc0d4ff)
-        embed.add_field(name="Suggested by", value=ctx.author, inline=True)
-        embed.add_field(name="ID", value=ctx.author.id, inline=True)
-        embed.set_footer(text="Type m!suggest <suggestion> to make a suggestion!")
-        embed.set_author(name="Suggestion", icon_url=self.bot.user.avatar_url)
+    
+        embed = discord.Embed(title="Suggestion", description=message.title(), color=0xc0d4ff)
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text=f"ID: {ctx.author.id}")
 
         channel = self.bot.get_channel(670470975929712640)
         await channel.send(embed=embed)
@@ -216,13 +221,26 @@ class Utility(commands.Cog, name="Utility.py"):
     @suggest.error
     async def suggest_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to make a suggestion.")
+            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to make a suggestion.")
+            await discord.Message.delete(errormsg, delay=5)
         print(error)
 
     @commands.command(pass_context=True)
     async def ping(self, ctx):
         ping = round(self.bot.latency * 1000)
-        await ctx.send(f"Ping: **{ping:,}**ms")
+        await ctx.send(f"Ping: **{ping}**ms")
+
+    @commands.command(aliases=["gi"])
+    async def guildicon(self, ctx):
+        embed = discord.Embed(title="Server Icon", description=None, url=str(ctx.author.guild.icon_url), color=0xc0d4ff)
+        embed.set_image(url=ctx.author.guild.icon_url)
+
+        await ctx.send(embed=embed)
+
+    @guildicon.error
+    async def guildicon_error(self, ctx, error):
+        errormsg = await ctx.send(error)
+        await discord.Message.delete(errormsg, delay=5)
 
 
 def setup(bot):

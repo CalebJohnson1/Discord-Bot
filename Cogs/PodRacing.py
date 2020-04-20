@@ -87,7 +87,8 @@ class PodRacing(commands.Cog, name="PodRacing.py"):
     @race.error
     async def race_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(f"Please wait **{round(error.retry_after, 2)}** seconds to complete another race.")
+            errormsg = await ctx.send(f"Please wait **{round(error.retry_after, 2)}** seconds to complete another race.")
+            await discord.Message.delete(errormsg, delay=5)
 
         print(error)
 
