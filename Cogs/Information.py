@@ -38,7 +38,7 @@ class Information(commands.Cog, name="Information.py"):
             errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to info a user.")
             await discord.Message.delete(errormsg, delay=5)
         else:
-            errormsg = await ctx.send("Please specify a member name, ex: <m!info May>")
+            errormsg = await ctx.send("Please specify a member name, ex: <m!info @May>")
             await discord.Message.delete(errormsg, delay=5)
             print(error)
 

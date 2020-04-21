@@ -21,6 +21,7 @@ class ModCog(commands.Cog, name='Moderation'):
         embed.add_field(name="m!ban <member id or mention>", value="Bans the member from the server.",
                         inline=False)
         embed.add_field(name="m!unban <member>", value="Unbans the member from the server.", inline=False)
+        embed.add_field(name="m!giveroleall <rolename>", value="Gives all members in the server the specified role.")
 
         await ctx.author.send(embed=embed)
         await ctx.send("Sent you a DM containing Moderation commands!")

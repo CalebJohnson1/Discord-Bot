@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import random
+from discord.utils import get
 
 tips = ["Tip: Did you know that you can send suggestions using m!suggest <message>?",
         "Tip: Ask May how her day is going! She'll respond to messages such as: 'Hey May, hows it going?', or 'great job may!'",
@@ -241,6 +242,22 @@ class Utility(commands.Cog, name="Utility.py"):
     async def guildicon_error(self, ctx, error):
         errormsg = await ctx.send(error)
         await discord.Message.delete(errormsg, delay=5)
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def giveroleall(self, ctx, *, rolename):
+        if get(ctx.guild.roles, name=rolename):
+            memberrole = discord.utils.get(ctx.guild.roles, name=rolename)
+            for member in ctx.guild.members:
+                if memberrole in member.roles:
+                        msg = await ctx.send(f"{member.display_name} already has the role.")
+                        await discord.Message.delete(msg, delay=5)
+                else:
+                    await member.add_roles(memberrole)
+                    msg = await ctx.send(f"Added {rolename} role to {member.display_name}")
+                    await discord.Message.delete(msg, delay=5)
+
+        await ctx.send(f"Finished adding {rolename} to members.")
 
 
 def setup(bot):
