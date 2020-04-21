@@ -63,7 +63,7 @@ class ModCog(commands.Cog, name='Moderation'):
             await ctx.send("I can't kick myself!")
             return
 
-        embed = discord.Embed(title="User Kicked", description=f"**Kicked:** {member.mention}\n**Reason:** {reason}", color=0xFF0068)
+        embed = discord.Embed(title=f"Kicked: {member}", description=f"**Reason:** {reason}", color=0xc0d4ff)
         embed.set_footer(text=f"ID: {member.id}")
 
         await member.kick(reason=reason)
@@ -98,7 +98,7 @@ class ModCog(commands.Cog, name='Moderation'):
             await asyncio.sleep(1)
             muted = discord.utils.get(ctx.guild.roles, name="Muted")
 
-        embed = discord.Embed(title="User Muted", description=f"**Muted:** {member.mention}\n**Reason:** {reason}", color=0xFF0068)
+        embed = discord.Embed(title=f"Muted: {member}", description=f"**Reason:** {reason}", color=0xc0d4ff)
         embed.set_footer(text=f"ID: {member.id}")
 
         await member.add_roles(muted)
@@ -129,7 +129,7 @@ class ModCog(commands.Cog, name='Moderation'):
             await ctx.send("I can't ban myself!")
             return
 
-        embed = discord.Embed(title="User Banned", description=f"**Banned:** {member.mention}\n**Reason:** {reason}", color=0xFF0068)
+        embed = discord.Embed(title=f"Banned: {member}", description=f"**Reason:** {reason}", color=0xc0d4ff)
         embed.set_footer(text=f"ID: {member.id}")
 
         await member.ban(reason=reason)
