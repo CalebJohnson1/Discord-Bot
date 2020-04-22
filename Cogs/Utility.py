@@ -216,7 +216,9 @@ class Utility(commands.Cog, name="Utility.py"):
         embed.set_footer(text=f"ID: {ctx.author.id}")
 
         channel = self.bot.get_channel(670470975929712640)
-        await channel.send(embed=embed)
+        msg = await channel.send(embed=embed)
+        await msg.add_reaction(":greencheck:702359954740478053")
+        await msg.add_reaction(":redx:702359966870405160")
         await ctx.send("Thank you, your suggestion has been received!")
 
     @suggest.error
