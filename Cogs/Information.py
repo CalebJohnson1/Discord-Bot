@@ -36,10 +36,10 @@ class Information(commands.Cog, name="Information.py"):
     async def infoerror(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to info a user.")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
         else:
             errormsg = await ctx.send("Please specify a member name, ex: <m!info @May>")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
             print(error)
 
     @commands.command(aliases=["av"])
@@ -63,7 +63,7 @@ class Information(commands.Cog, name="Information.py"):
     @avatar.error
     async def avatar_error(self, ctx, error):
         errormsg = await ctx.send("Please specify a member, usage: <m!avatar <username>")
-        await discord.Message.delete(errormsg, delay=5)
+        await discord.Message.delete(errormsg, delay=3)
         print(error)
 
     @commands.command()

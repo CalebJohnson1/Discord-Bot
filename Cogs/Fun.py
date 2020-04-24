@@ -98,7 +98,7 @@ class Fun(commands.Cog, name="Fun.py"):
     @encounter.error
     async def encountererror(self, ctx, error):
         errormsg = await ctx.send('Please specify an amount + name to encounter.\nUsage: **m!encounter <amount> <pokemon>**')
-        await discord.Message.delete(errormsg, delay=5)
+        await discord.Message.delete(errormsg, delay=3)
         print(error)
 
     @commands.command()
@@ -117,22 +117,7 @@ class Fun(commands.Cog, name="Fun.py"):
     async def fakebal_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to use this command.")
-            await discord.Message.delete(errormsg, delay=5)
-
-    @commands.command()
-    async def catch(self, ctx, *, pokemon):
-        await ctx.send(
-            f"Congratulations {ctx.author.mention}! You caught a level {random.randint(1, 42)} Shiny {pokemon.title()}!")
-
-    @catch.error
-    async def catch_error(self, ctx, error):
-        errormsg = await ctx.send("Please input the name of a pokemon to catch.")
-        await discord.Message.delete(errormsg, delay=5)
-        print(error)
-
-    @commands.command()
-    async def redeem(self, ctx, *, pokemon):
-        await ctx.send(f"You have been given a Shiny {pokemon.title()}!")
+            await discord.Message.delete(errormsg, delay=3)
 
     @commands.command()
     async def say(self, ctx, *, message=None):
@@ -190,7 +175,7 @@ class Fun(commands.Cog, name="Fun.py"):
     async def hug_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.BadArgument):
             errormsg = await ctx.send("Please specify another user to hug.\nUsage: **m!hug <user>**")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
 
     @commands.command()
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -232,11 +217,11 @@ class Fun(commands.Cog, name="Fun.py"):
     async def kiss_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.BadArgument):
             errormsg = await ctx.send("Please specify another user to kiss.\nUsage: **m!kiss <user>**")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
 
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please {ctx.author.display_name}, take two seconds to breathe.")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
 
     @commands.command(aliases=["backward", "backwards"])
     async def reverse(self, ctx, *, message = None):

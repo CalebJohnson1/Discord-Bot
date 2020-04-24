@@ -48,11 +48,11 @@ class Gambling(commands.Cog, name="Gambling.py"):
     async def gamble_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to roll the dice.")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
             return
 
         errormsg = await ctx.send("Please specify an amount to gamble! <m!55x2 (amount)>")
-        await discord.Message.delete(errormsg, delay=5)
+        await discord.Message.delete(errormsg, delay=3)
         print(error)
 
 

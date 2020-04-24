@@ -13,15 +13,15 @@ class ModCog(commands.Cog, name='Moderation'):
         embed = discord.Embed(title="Moderation Commands", description="Commands for Moderators.", color=0xc0d4ff)
         embed.add_field(name="m!clear <amount>",
                         value="Purges a specified amount of messages (5 if no specification).", inline=False)
+        embed.add_field(name="m!ban <member id or mention>", value="Bans the specified member from the server.",
+                        inline=False)
+        embed.add_field(name="m!unban <member>", value="Unbans the member from the server.", inline=False)
+        embed.add_field(name="m!giveroleall <rolename>", value="Gives all members in the server the specified role.")
         embed.add_field(name="m!kick <member id or mention>", value="Kicks the member from the server.",
                         inline=False)
         embed.add_field(name="m!mute <member id or mention>", value="Mutes the member from the server.",
                         inline=False)
         embed.add_field(name="m!unmute <member name or mention>", value="Unmuted the member from the server.", inline=False)
-        embed.add_field(name="m!ban <member id or mention>", value="Bans the member from the server.",
-                        inline=False)
-        embed.add_field(name="m!unban <member>", value="Unbans the member from the server.", inline=False)
-        embed.add_field(name="m!giveroleall <rolename>", value="Gives all members in the server the specified role.")
 
         await ctx.author.send(embed=embed)
         await ctx.send("Sent you a DM containing Moderation commands!")
@@ -29,8 +29,8 @@ class ModCog(commands.Cog, name='Moderation'):
     @moderation.error
     async def moderation_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You don't have permissions to do this.")
-            await discord.Message.delete(errormsg, delay=5)
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
 
     """@commands.command(aliases=["announce"])
     @commands.cooldown(1, 300, commands.BucketType.guild)
@@ -50,18 +50,22 @@ class ModCog(commands.Cog, name='Moderation'):
     @announcement.error
     async def announcement_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You don't have permissions to do this.")
-            await discord.Message.delete(errormsg, delay=5)
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
 
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to send an announcement.")
-            await discord.Message.delete(errormsg, delay=5)"""
+            await discord.Message.delete(errormsg, delay=3)"""
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         if member == self.bot.user:
             await ctx.send("I can't kick myself!")
+            return
+
+        if ctx.author.top_role <= member.top_role:
+            await ctx.send("You are not permitted to use this command on this user.")
             return
 
         embed = discord.Embed(title=f"Kicked: {member}", description=f"**Reason:** {reason}", color=0xc0d4ff)
@@ -73,14 +77,18 @@ class ModCog(commands.Cog, name='Moderation'):
     @kick.error
     async def kick_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You don't have permissions to do this.")
-            await discord.Message.delete(errormsg, delay=5)
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, member: discord.Member, *, reason=None):
         if member == self.bot.user:
             await ctx.send("I can't mute myself!")
+            return
+
+        if ctx.author.top_role <= member.top_role:
+            await ctx.send("You are not permitted to use this command on this user.")
             return
 
         if get(ctx.guild.roles, name="Muted"):
@@ -108,7 +116,7 @@ class ModCog(commands.Cog, name='Moderation'):
     @mute.error
     async def mute_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You don't have permissions to do this.")
+            errormsg = await ctx.send("You are not permitted to use this command.")
             await discord.Message.delete(errormsg, delay=5)
         print(error)
 
@@ -130,6 +138,10 @@ class ModCog(commands.Cog, name='Moderation'):
             await ctx.send("I can't ban myself!")
             return
 
+        if ctx.author.top_role <= member.top_role:
+            await ctx.send("You are not permitted to use this command on this user.")
+            return
+
         embed = discord.Embed(title=f"Banned: {member}", description=f"**Reason:** {reason}", color=0xc0d4ff)
         embed.set_footer(text=f"ID: {member.id}")
 
@@ -140,8 +152,8 @@ class ModCog(commands.Cog, name='Moderation'):
     @ban.error
     async def ban_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You don't have permissions to do this.")
-            discord.Message.delete(errormsg, delay=5)
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
@@ -158,7 +170,11 @@ class ModCog(commands.Cog, name='Moderation'):
                 return
 
     @unban.error
-    async def unban_error(self, error):
+    async def unban_error(self, ctx, error):
+        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
+
         print(error)
 
     @commands.command(aliases=["clean", "purge"])
@@ -172,11 +188,11 @@ class ModCog(commands.Cog, name='Moderation'):
     async def clear_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to purge the chat.")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
         
         if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You don't have permissions to do this.")
-            await discord.Message.delete(errormsg, delay=5)
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
 
     @commands.command(aliases=["update"])
     async def reload(self, ctx, *, extension = None):
@@ -230,7 +246,6 @@ class ModCog(commands.Cog, name='Moderation'):
                         embed = discord.Embed(title="Error", description=None, color=0xc0d4ff)
                         embed.add_field(name=extensions, value=e, inline=False)
 
-
             msg = await ctx.send(embed=embed)
             
             for extension in extensions:
@@ -252,7 +267,27 @@ class ModCog(commands.Cog, name='Moderation'):
                         await discord.Message.edit(msg, embed=embed)
 
                     print(f"{extension[5:]} cannot be loaded. {e}")
-                
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def giveroleall(self, ctx, *, rolename):
+        if get(ctx.guild.roles, name=rolename):
+            role = discord.utils.get(ctx.guild.roles, name=rolename)
+            for member in ctx.guild.members:
+                if role in member.roles or member.bot:
+                        continue
+                else:
+                    await member.add_roles(role)
+                    msg = await ctx.send(f"Added {rolename} role to {member.display_name}")
+                    await discord.Message.delete(msg, delay=3)
+
+        await ctx.send(f"Finished adding {rolename} role to members.")
+
+    @giveroleall.error
+    async def gra_error(self, ctx, error):
+        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
 
 def setup(bot):
     bot.add_cog(ModCog(bot))

@@ -225,7 +225,7 @@ class Utility(commands.Cog, name="Utility.py"):
     async def suggest_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to make a suggestion.")
-            await discord.Message.delete(errormsg, delay=5)
+            await discord.Message.delete(errormsg, delay=3)
         print(error)
 
     @commands.command(pass_context=True)
@@ -243,23 +243,7 @@ class Utility(commands.Cog, name="Utility.py"):
     @guildicon.error
     async def guildicon_error(self, ctx, error):
         errormsg = await ctx.send(error)
-        await discord.Message.delete(errormsg, delay=5)
-
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def giveroleall(self, ctx, *, rolename):
-        if get(ctx.guild.roles, name=rolename):
-            memberrole = discord.utils.get(ctx.guild.roles, name=rolename)
-            for member in ctx.guild.members:
-                if memberrole in member.roles:
-                        msg = await ctx.send(f"{member.display_name} already has the role.")
-                        await discord.Message.delete(msg, delay=5)
-                else:
-                    await member.add_roles(memberrole)
-                    msg = await ctx.send(f"Added {rolename} role to {member.display_name}")
-                    await discord.Message.delete(msg, delay=5)
-
-        await ctx.send(f"Finished adding {rolename} to members.")
+        await discord.Message.delete(errormsg, delay=3)
 
 
 def setup(bot):
