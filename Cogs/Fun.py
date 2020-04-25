@@ -265,6 +265,42 @@ class Fun(commands.Cog, name="Fun.py"):
 
         await ctx.send(embed=embed)
 
+    """@commands.command()
+    async def info(self, ctx, suffix):
+        if suffix == "latest":
+            hp = random.randint(31, 31)
+            attack = random.randint(31, 31)
+            defense = random.randint(31, 31)
+            spatk = random.randint(31, 31)
+            spdef = 30
+            speed = random.randint(31, 31)
+            totalIV = round((hp + attack + defense + spatk + spdef + speed) * 0.53764, 2)
+
+            if totalIV == 50 or totalIV == 0 or totalIV == 100:
+                totalIV = round((hp + attack + defense + spatk + spdef + speed) * 0.53764)
+
+            level = random.randint(1, 42)
+            levelxp = level*60
+
+            embed = discord.Embed(title=f":star: Level {level} Zeraora", description=f"1/{levelxp}XP\n"
+                                            f"**Type:** Electric\n"
+                                            f"**Nature:** Lonely\n"
+                                            f"**HP:** 88 - IV: {hp}/31\n"
+                                            f"**Attack:** 112 - IV: {attack}/31\n"
+                                            f"**Defense:** 75 - IV: {defense}/31\n"
+                                            f"**Sp. Atk:** 102 - IV: {spatk}/31\n"
+                                            f"**Sp. Def:** 80 - IV: {spdef}/31\n"
+                                            f"**Speed:** 143 - IV: {speed}/31\n"
+                                            f"**Total IV %:** {totalIV}%", color=0xc0d4ff)
+
+            embed.set_author(name="Professor Oak", icon_url="https://images-ext-2.discordapp.net/external/oMthNLlPT-Sjg-4nanyqxHDBH4iE7N8CVUh0WFjlxAc/https/i.imgur.com/8ZpM4tb.jpg")
+            embed.set_thumbnail(url=ctx.author.avatar_url)
+            embed.set_image(url="https://i.imgur.com/CU9dyLg.png")
+            embed.set_footer(text="Selected Pokémon: 1/1 - Use p!back and p!next to cycle through your pokémon!")
+
+            await ctx.send(embed=embed)
+        else:
+            return"""
 
 def setup(bot):
     bot.add_cog(Fun(bot))

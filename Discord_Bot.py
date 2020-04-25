@@ -16,7 +16,7 @@ def read_token():
 
 TOKEN = read_token()
 
-client = commands.Bot(command_prefix="m!", case_insensitive=True)
+client = commands.Bot(command_prefix="!", case_insensitive=True)
 client.remove_command("help")
 tips = ["Tip: Did you know that you can send suggestions using m!suggest <message>?",
         "Tip: Instead of using m!fact, you can say: 'Hey May, tell me a fact!'\nThis also works with quotes and jokes.",

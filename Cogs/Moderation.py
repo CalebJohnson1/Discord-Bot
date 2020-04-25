@@ -13,15 +13,16 @@ class ModCog(commands.Cog, name='Moderation'):
         embed = discord.Embed(title="Moderation Commands", description="Commands for Moderators.", color=0xc0d4ff)
         embed.add_field(name="m!clear <amount>",
                         value="Purges a specified amount of messages (5 if no specification).", inline=False)
-        embed.add_field(name="m!ban <member id or mention>", value="Bans the specified member from the server.",
+        embed.add_field(name="m!ban <member id or mention>", value="Bans the specified member from the guild.",
                         inline=False)
-        embed.add_field(name="m!unban <member>", value="Unbans the member from the server.", inline=False)
-        embed.add_field(name="m!giveroleall <rolename>", value="Gives all members in the server the specified role.")
-        embed.add_field(name="m!kick <member id or mention>", value="Kicks the member from the server.",
+        embed.add_field(name="m!softban <member id or mention>", value="Bans then immediately unbans the specified user from the guild.")
+        embed.add_field(name="m!unban <member>", value="Unbans a member from the server.", inline=False)
+        embed.add_field(name="m!giveroleall <rolename>", value="Gives all members in the guild a specified role.")
+        embed.add_field(name="m!kick <member id or mention>", value="Kicks a member from the guild.",
                         inline=False)
-        embed.add_field(name="m!mute <member id or mention>", value="Mutes the member from the server.",
+        embed.add_field(name="m!mute <member id or mention>", value="Mutes a member from the guild.",
                         inline=False)
-        embed.add_field(name="m!unmute <member name or mention>", value="Unmuted the member from the server.", inline=False)
+        embed.add_field(name="m!unmute <member name or mention>", value="Unmutes a member from the guild.", inline=False)
 
         await ctx.author.send(embed=embed)
         await ctx.send("Sent you a DM containing Moderation commands!")
@@ -131,7 +132,7 @@ class ModCog(commands.Cog, name='Moderation'):
     async def unmute_error(self, error):
         print(error)
 
-    @commands.command(aliases=["banhammer"])
+    @commands.command()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         if member == self.bot.user:
@@ -151,6 +152,31 @@ class ModCog(commands.Cog, name='Moderation'):
 
     @ban.error
     async def ban_error(self, ctx, error):
+        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
+            errormsg = await ctx.send("You are not permitted to use this command.")
+            await discord.Message.delete(errormsg, delay=3)
+
+    @commands.command()
+    @commands.has_permissions(ban_members=True)
+    async def softban(self, ctx, member: discord.Member, *, reason=None):
+        if member == self.bot.user:
+            await ctx.send("I can't softban myself!")
+            return
+
+        if ctx.author.top_role <= member.top_role:
+            await ctx.send("You are not permitted to use this command on this user.")
+            return
+
+        embed = discord.Embed(title=f"Softbanned: {member}", description=f"**Reason:** {reason}", color=0xc0d4ff)
+        embed.set_footer(text=f"ID: {member.id}")
+
+        await member.ban(reason=reason)
+        await member.unban(reason=reason)
+
+        await ctx.send(embed=embed)
+
+    @softban.error
+    async def softban_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingPermissions):
             errormsg = await ctx.send("You are not permitted to use this command.")
             await discord.Message.delete(errormsg, delay=3)

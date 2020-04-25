@@ -198,7 +198,7 @@ class Utility(commands.Cog, name="Utility.py"):
         embed.add_field(name="Gambling", value="Coming Soon", inline=False)
         embed.add_field(name="Interaction", value="m!hug, m!kiss", inline=False)
         embed.add_field(name="Fun", value="m!fact, m!pokemonfact, m!joke, m!quote, m!8ball, m!generate, m!encounter,"
-                                          " m!say, m!reverse",
+                                          " m!say, m!reverse, m!fakebal",
                         inline=False)
         embed.set_footer(text=f"{random.choice(tips)}")
 
