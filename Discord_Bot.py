@@ -16,7 +16,7 @@ def read_token():
 
 TOKEN = read_token()
 
-client = commands.Bot(command_prefix=["m!", "M!", "may!", "May!"], case_insensitive=True)
+client = commands.Bot(command_prefix=["m!", "M!"], case_insensitive=True)
 client.remove_command("help")
 
 @client.event

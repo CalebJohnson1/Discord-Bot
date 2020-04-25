@@ -4,8 +4,7 @@ import random
 from discord.utils import get
 
 tips = ["Tip: Did you know that you can send suggestions using m!suggest <message>?",
-        "Tip: Ask May how her day is going! She'll respond to messages such as: 'Hey May, hows it going?', or 'great job may!'",
-        "Tip: You can also use may!<command> as a prefix instead of m!"]
+        "Tip: Ask May how her day is going! She'll respond to messages such as: 'Hey May, hows it going?', or 'great job may!'",]
 
 
 class Utility(commands.Cog, name="Utility.py"):
