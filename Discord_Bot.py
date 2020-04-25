@@ -16,14 +16,8 @@ def read_token():
 
 TOKEN = read_token()
 
-client = commands.Bot(command_prefix="m!", case_insensitive=True)
+client = commands.Bot(command_prefix=["m!", "M!", "may!", "May!"], case_insensitive=True)
 client.remove_command("help")
-tips = ["Tip: Did you know that you can send suggestions using m!suggest <message>?",
-        "Tip: Instead of using m!fact, you can say: 'Hey May, tell me a fact!'\nThis also works with quotes and jokes.",
-        "Tip: Ask May how her day is going! She'll respond to messages such as: 'Hey May, hows your day going?', or 'great job may!'",
-        "Tip: You can also use may! <command> as a prefix instead of m!",
-        "Tip: Mention May to receive a random fact! also works with m!fact."]
-
 
 @client.event
 async def on_ready():
