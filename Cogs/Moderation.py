@@ -132,7 +132,7 @@ class ModCog(commands.Cog, name='Moderation'):
     async def unmute_error(self, error):
         print(error)
 
-    @commands.command()
+    @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         if member == self.bot.user:
@@ -156,7 +156,7 @@ class ModCog(commands.Cog, name='Moderation'):
             errormsg = await ctx.send("You are not permitted to use this command.")
             await discord.Message.delete(errormsg, delay=3)
 
-    @commands.command()
+    @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
     async def softban(self, ctx, member: discord.Member, *, reason=None):
         if member == self.bot.user:
@@ -171,7 +171,7 @@ class ModCog(commands.Cog, name='Moderation'):
         embed.set_footer(text=f"ID: {member.id}")
 
         await member.ban(reason=reason)
-        await member.unban(reason=reason)
+        await ctx.guild.unban(member)
 
         await ctx.send(embed=embed)
 
@@ -181,7 +181,7 @@ class ModCog(commands.Cog, name='Moderation'):
             errormsg = await ctx.send("You are not permitted to use this command.")
             await discord.Message.delete(errormsg, delay=3)
 
-    @commands.command()
+    @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, *, member: discord.Member):
         banned_users = await ctx.guild.bans()
@@ -203,7 +203,7 @@ class ModCog(commands.Cog, name='Moderation'):
 
         print(error)
 
-    @commands.command(aliases=["clean", "purge"])
+    @commands.command(aliases=["clean", "purge"], pass_context=True)
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def clear(self, ctx, amount=5):
