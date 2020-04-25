@@ -1,6 +1,7 @@
+import random
+
 import discord
 from discord.ext import commands
-import random
 from discord.utils import get
 
 tips = ["Tip: Did you know that you can send suggestions using m!suggest <message>?",

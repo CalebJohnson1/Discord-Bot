@@ -1,6 +1,8 @@
-from discord.ext import commands
-import discord
 import random
+
+import discord
+from discord.ext import commands
+
 
 class Fun(commands.Cog, name="Fun.py"):
     def __init__(self, bot):

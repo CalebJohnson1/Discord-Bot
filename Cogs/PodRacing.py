@@ -1,7 +1,8 @@
+import random
+import sqlite3
+
 import discord
 from discord.ext import commands
-import sqlite3
-import random
 
 
 class PodRacing(commands.Cog, name="PodRacing.py"):

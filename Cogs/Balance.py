@@ -1,6 +1,7 @@
+import sqlite3
+
 import discord
 from discord.ext import commands
-import sqlite3
 
 
 class Balance(commands.Cog, name="Balance.py"):

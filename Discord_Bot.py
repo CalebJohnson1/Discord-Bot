@@ -1,11 +1,12 @@
+import asyncio
+import os
+import random
+import sqlite3
+from sqlite3 import connect
+
 import discord
 from discord.ext import commands
 from discord.utils import get
-import asyncio
-import sqlite3
-from sqlite3 import connect
-import random
-import os
 
 
 def read_token():
