@@ -17,9 +17,6 @@ class Balance(commands.Cog, name="Balance.py"):
         if message.author.bot:
             return
 
-        if isinstance(message.channel, discord.DMChannel):
-            return
-
         bucket = self._cd.get_bucket(message)
         retry_after = bucket.update_rate_limit()
 
@@ -45,7 +42,7 @@ class Balance(commands.Cog, name="Balance.py"):
                 cursor.execute(sql, val)
             db.commit()
 
-    @commands.command(aliases=["bal", "balance"])
+    @commands.command(aliases=["cred", "creds"])
     async def credits(self, ctx, user: discord.User = None):
         if user is not None:
             db = sqlite3.connect('database.sqlite')
@@ -53,11 +50,11 @@ class Balance(commands.Cog, name="Balance.py"):
             cursor.execute(
                 f"SELECT UserID, Balance FROM money WHERE UserID = {ctx.author.id}")
             result = cursor.fetchone()
-            embed = discord.Embed(title=f"{ctx.author.display_name}'s Galactic Credits: ",
-                                description=f"You currently have {int(result[1]):,} Galactic Credits.", color=0xc0d4ff)
+            embed = discord.Embed(title=f"{ctx.author.display_name}'s Credits: {int(result[1]):,} ",
+                                color=0xc0d4ff)
             icon = "https://i.imgur.com/IfvzrTH.png"
             embed.set_thumbnail(url=icon)
-            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            embed.set_author(name="Credits", icon_url=icon)
             await ctx.send(embed=embed)
             cursor.close()
             db.close()
@@ -71,11 +68,11 @@ class Balance(commands.Cog, name="Balance.py"):
             if result is None:
                 return
             else:
-                embed = discord.Embed(title=f"{ctx.author.display_name}'s Galactic Credits: ",
-                                      description=f"You currently have {int(result[1]):,} Galactic Credits.",
-                                      color=0xc0d4ff)
+                embed = discord.Embed(title=f"{ctx.author.display_name}'s Credits: {int(result[1]):,} ",
+                                color=0xc0d4ff)
                 icon = "https://i.imgur.com/IfvzrTH.png"
                 embed.set_thumbnail(url=icon)
+                embed.set_author(name="Credits", icon_url=icon)
                 await ctx.send(embed=embed)
             cursor.close()
             db.close()
@@ -84,7 +81,7 @@ class Balance(commands.Cog, name="Balance.py"):
     async def credits_error(self, error):
         print(error)
 
-    @commands.command(aliases=["galacticpoints"])
+    @commands.command()
     async def points(self, ctx, user: discord.User = None):
         if user is not None:
             db = sqlite3.connect('database.sqlite')
@@ -92,11 +89,11 @@ class Balance(commands.Cog, name="Balance.py"):
             cursor.execute(
                 f"SELECT UserID, Points FROM money WHERE UserID = {ctx.author.id}")
             result = cursor.fetchone()
-            embed = discord.Embed(title=f"{ctx.author.display_name}'s Imperial Points: ",
-                                  description=f"You currently have {int(result[1]):,} Imperial Points.", color=0xc0d4ff)
+            embed = discord.Embed(title=f"{ctx.author.display_name}'s Points: {int(result[1]):,} ",
+                                color=0xc0d4ff)
             icon = "https://i.imgur.com/HA7W10l.png"
             embed.set_thumbnail(url=icon)
-            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            embed.set_author(name="Points", icon_url=icon)
             await ctx.send(embed=embed)
             cursor.close()
             db.close()
@@ -110,8 +107,8 @@ class Balance(commands.Cog, name="Balance.py"):
             if result is None:
                 return
             else:
-                embed = discord.Embed(title=f"{ctx.author.display_name}'s Imperial Points: ",
-                                      description=f"You currently have {int(result[1]):,} Imperial Points.",
+                embed = discord.Embed(title=f"{ctx.author.display_name}'s Points: ",
+                                      description=f"You currently have {int(result[1]):,} Points.",
                                       color=0xc0d4ff)
                 icon = "https://i.imgur.com/HA7W10l.png"
                 embed.set_thumbnail(url=icon)

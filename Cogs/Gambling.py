@@ -1,3 +1,4 @@
+import asyncio
 import random
 import sqlite3
 
@@ -47,15 +48,53 @@ class Gambling(commands.Cog, name="Gambling.py"):
 
     @gamble.error
     async def gamble_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to roll the dice.")
-            await discord.Message.delete(errormsg, delay=3)
-            return
-
         errormsg = await ctx.send("Please specify an amount to gamble! <m!55x2 (amount)>")
-        await discord.Message.delete(errormsg, delay=3)
+        await discord.Message.delete(errormsg, delay=5)
         print(error)
 
+    @commands.command()
+    @commands.cooldown(1, 2, commands.BucketType.user)
+    async def dice(self, ctx):
+        userroll = random.randint(1, 100)
+        botroll = random.randint(1, 100)
+
+        try:
+            embed = discord.Embed(title="Rolling Dice...", description=f"{ctx.author.display_name} Rolls: \n"
+                                                                        "May Rolls: ", color=0xc0d4ff)
+            
+            newembed = discord.Embed(title="Rolling Dice...", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
+                                                                        f"May Rolls: ", color=0xc0d4ff)
+            
+            finalembed = discord.Embed(title="Rolling Dice...", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
+                                                       f"May Rolls: **{botroll}**", color=0xc0d4ff)
+        except Exception as e:
+            print(e)
+            return
+            
+        msg = await ctx.send(embed=embed)
+        await asyncio.sleep(1)
+        await discord.Message.edit(msg, embed=newembed)
+        await asyncio.sleep(1)
+        await discord.Message.edit(msg, embed=finalembed)
+        await asyncio.sleep(1)
+
+        try:
+            if userroll > botroll:
+                finalembed = discord.Embed(title=f"{ctx.author.display_name} wins!", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
+                                                                        f"May Rolls: **{botroll}**\n", color=0xc0d4ff)
+                await discord.Message.edit(msg, embed=finalembed)
+            elif userroll < botroll:
+                finalembed = discord.Embed(title=f"{ctx.author.display_name} loses...", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
+                                                                        f"May Rolls: **{botroll}**\n", color=0xc0d4ff)
+                await discord.Message.edit(msg, embed=finalembed)
+            else:
+                finalembed = discord.Embed(title=f"Tie!", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
+                                                                        f"May Rolls: **{botroll}**\n", color=0xc0d4ff)
+                await discord.Message.edit(msg, embed=finalembed)
+
+        except Exception as e:
+            print(e)
+            return
 
 def setup(bot):
     bot.add_cog(Gambling(bot))

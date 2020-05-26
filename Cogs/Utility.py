@@ -1,4 +1,4 @@
-import random
+import random, asyncio
 
 import discord
 from discord.ext import commands
@@ -17,189 +17,19 @@ class Utility(commands.Cog, name="Utility.py"):
         if command is not None:
             command = command.lower()
 
-        help_icon = "https://cdn.discordapp.com/emojis/678432297896116226.png?v=1"
-
         # Recode all this so auto detects the cmd you specify. No need to have an if for each diff cmd.
-
-        if command == "info":
-            embed = discord.Embed(title="Info Help", description="Gives information on a user.\n"
-                                                                 "Usage: **m!info (user)**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "avatar":
-            embed = discord.Embed(title="Avatar Help", description="Returns an embed with the users profile picture.\n"
-                                                                   "Usage: **m!avatar (user)**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-    
-        if command == "members":
-            embed = discord.Embed(title="Members Help", description="Displays how many members are in the server.\n"
-                                                                    "Usage: **m!members**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "ping":
-            embed = discord.Embed(title="Ping Help", description="Displays the latency of the bot.\n"
-                                                                 "Usage: **m!ping**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "suggest" or command == "suggestion":
-            embed = discord.Embed(title="Suggestion Help",
-                                  description="Inputs a suggestion into the suggestions tab of May's main server\n"
-                                              "Usage: **m!suggest (suggestion)**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "kick" or command == "mute" or command == "unmute" or command == "ban" or \
-                command == "unban" or command == "clear" or command == "moderation":
-            await ctx.send("please use **m!moderation** to view moderation commands.")
-            return
-
-        if command == "credits" or command == "balance" or command == "bal":
-            embed = discord.Embed(title="Credits Help", description="Displays your Galactic Credits.\n"
-                                                                    "Usage: **m!credits**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "points" or command == "galactic points":
-            embed = discord.Embed(title="Points Help", description="Displays your Galactic Points.\n"
-                                                                   "Usage: **m!points**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "raid" or command == "raids":
-            embed = discord.Embed(title="Raid Help", description="Completes a raid and awards credits.\n"
-                                                                 "Usage: **m!raid**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "55x2":
-            embed = discord.Embed(title="55x2 Help", description="Rolls a dice. If the dice rolls over 55, you win.\n"
-                                                                 "Usage: **m!55x2**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "hug":
-            embed = discord.Embed(title="Hugging Help", description="Give someone a hug!.\n"
-                                                                    "Usage: **m!hug <mention>**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "kiss" or command == "kissing":
-            embed = discord.Embed(title="Kissing Help", description="Give someone a kiss!.\n"
-                                                                    "Usage: **m!kiss <mention>**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "fact":
-            embed = discord.Embed(title="Fact Help", description="Sends a random fact.\n"
-                                                                 "Usage: **m!fact**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "quote":
-            embed = discord.Embed(title="Quote Help", description="Sends a random quote from a tv show or movie.\n"
-                                                                  "Usage: **m!quote**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "joke":
-            embed = discord.Embed(title="Joke Help", description="Sends a random joke.\n"
-                                                                 "Usage: **m!joke**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "8ball":
-            embed = discord.Embed(title="8ball Help", description="Ask a question you've always wanted an answer to!\n"
-                                                                  "Usage: **m!8ball (question)**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "generate":
-            embed = discord.Embed(title="Generate Help", description="Generates a random username.\n"
-                                                                     "Usage: **m!generate**", color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "encounter":
-            embed = discord.Embed(title="Encounter Help", description="Stimulates a set number of pokemon encounters!\n"
-                                                                      "Usage: **m!encounter <amount> <name>**",
-                                  color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "say" or command == "speak":
-            embed = discord.Embed(title="Speak Help", description="Speak as the bot!\n"
-                                                                  "Usage: **m!say <message>**",
-                                  color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "reverse" or command == "backwards":
-            embed = discord.Embed(title="Reverse Help", description="Send a message backwards!\n"
-                                                                    "Usage: **m!reverse <message>**",
-                                  color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "race" or command == "podracing":
-            embed = discord.Embed(title="Pod Racing", description="Stimulates a podrace!\n"
-                                                                  "Usage: **m!race**\n"
-                                                                  "This commands grants Galactic Credits, as well as Galactic Points.",
-                                  color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "fish" or command == "fishing":
-            embed = discord.Embed(title="Fishing", description="Go fishing and catch a fish! (Star Wars based)\n"
-                                                               "Usage: **m!fish**\n"
-                                                               "This commands grants Galactic Credits, as well as Galactic Points.",
-                                  color=0xc0d4ff)
-            embed.set_author(name="Help", icon_url=help_icon)
-            await ctx.send(embed=embed)
-            return
-
-        if command == "guildicon" or command == "gi":
-            embed = discord.Embed(title="", description="Sends an embed of the current guild icon.\n"
-                                                        "Usage: **m!gi** or **m!guildicon**")
-            await ctx.send(embed=embed)
-            return
 
         embed = discord.Embed(title="**Commands**",
                               description="Use **m!help <command>** to get information on a command.",
                               color=0xc0d4ff)
         embed.add_field(name="Information", value="m!info, m!avatar, m!members",
                         inline=False)
-        embed.add_field(name="Utility", value="m!help, m!suggest, m!ping, m!guildicon")
-        embed.add_field(name="Economy", value="m!credits, m!points", inline=False)
-        embed.add_field(name="Star Wars", value="m!race, m!fish", inline=False)
+        embed.add_field(name="Utility", value="m!help, m!suggest, m!ping, m!giveroleall, m!removeroleall, m!guildicon")
+        embed.add_field(name="Economy", value="m!credits, m!points, m!race, m!fish", inline=False)
         embed.add_field(name="Gambling", value="Coming Soon", inline=False)
         embed.add_field(name="Interaction", value="m!hug, m!kiss", inline=False)
         embed.add_field(name="Fun", value="m!fact, m!pokemonfact, m!joke, m!quote, m!8ball, m!generate, m!encounter,"
-                                          " m!say, m!reverse, m!fakebal",
-                        inline=False)
+                                          " m!say, m!reverse, m!fakebal", inline=False)
         embed.set_footer(text=f"{random.choice(tips)}")
 
         await ctx.send(embed=embed)
@@ -219,14 +49,8 @@ class Utility(commands.Cog, name="Utility.py"):
         msg = await channel.send(embed=embed)
         await msg.add_reaction(":greencheck:702359954740478053")
         await msg.add_reaction(":redx:702359966870405160")
-        await ctx.send("Thank you, your suggestion has been received!")
-
-    @suggest.error
-    async def suggest_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to make a suggestion.")
-            await discord.Message.delete(errormsg, delay=3)
-        print(error)
+        msg = await ctx.send("Thank you, your suggestion has been received!")
+        await discord.Message.delete(msg, delay=3)
 
     @commands.command(pass_context=True)
     async def ping(self, ctx):
@@ -235,16 +59,115 @@ class Utility(commands.Cog, name="Utility.py"):
 
     @commands.command(aliases=["gi"])
     async def guildicon(self, ctx):
-        embed = discord.Embed(title="Server Icon", description=None, url=str(ctx.author.guild.icon_url), color=0xc0d4ff)
+        embed = discord.Embed(title="Server Icon", url=str(ctx.author.guild.icon_url), color=0xc0d4ff)
         embed.set_image(url=ctx.author.guild.icon_url)
 
         await ctx.send(embed=embed)
 
-    @guildicon.error
-    async def guildicon_error(self, ctx, error):
-        errormsg = await ctx.send(error)
-        await discord.Message.delete(errormsg, delay=3)
+    @commands.command(aliases=["gra"])
+    @commands.has_permissions(administrator=True)
+    async def giveroleall(self, ctx, *, rolename):
+        role = discord.utils.get(ctx.guild.roles, name=rolename)
+        if not role in ctx.guild.roles:
+            await ctx.send("This role does not exist!")
+            return
 
+        if role > ctx.author.top_role:
+            await ctx.send("Access denied. This role is higher than your top role!")
+            return
+
+        userswithrole = 0
+        userswithoutrole = 0
+
+        try:
+            for member in ctx.guild.members:
+                if not member.bot:
+                    if role in member.roles:
+                        userswithrole += 1
+                    if not role in member.roles:
+                        userswithoutrole += 1
+        except Exception as e:
+            print(e)
+
+        embed = discord.Embed(title=f"Role name: {rolename}", color=0xc0d4ff)
+        embed.add_field(name=f"Users with role", value=f"**{userswithrole}**", inline=True)
+        embed.add_field(name=f"Users without role", value=f"**{userswithoutrole}**", inline=True)
+
+        msg = await ctx.send(embed=embed)
+
+        if get(ctx.guild.roles, name=rolename):
+            for member in ctx.guild.members:
+                if role in member.roles or member.bot:
+                        continue
+                else:
+                    await member.add_roles(role)
+                    embed.remove_field(1)
+                    embed.remove_field(0)
+                    userswithrole += 1
+                    userswithoutrole -= 1
+                    embed.add_field(name=f"Users with role", value=f"**{userswithrole}**", inline=True)
+                    embed.add_field(name=f"Users without role", value=f"**{userswithoutrole}**", inline=True)
+                    await discord.Message.edit(msg, embed=embed)
+
+        embed.set_footer(text=f"Finished adding {rolename} role to members")
+        await msg.edit(embed=embed)
+
+    @commands.command(aliases=["rra"])
+    @commands.has_permissions(administrator=True)
+    async def removeroleall(self, ctx, *, rolename):
+        role = discord.utils.get(ctx.guild.roles, name=rolename)
+        if not role in ctx.guild.roles:
+            await ctx.send("This role does not exist!")
+            return
+
+        if role > ctx.author.top_role:
+            await ctx.send("Access denied. You cannot grant a role higher than your top role.")
+            return
+
+        userswithrole = 0
+        userswithoutrole = 0
+
+        try:
+            for member in ctx.guild.members:
+                if not member.bot:
+                    if role in member.roles:
+                        userswithrole += 1
+                    if not role in member.roles:
+                        userswithoutrole += 1
+        except Exception as e:
+            print(e)
+
+        embed = discord.Embed(title=f"Role name: {rolename}", color=0xc0d4ff)
+        embed.add_field(name=f"Users with role", value=f"**{userswithrole}**", inline=True)
+        embed.add_field(name=f"Users without role", value=f"**{userswithoutrole}**", inline=True)
+
+        msg = await ctx.send(embed=embed)
+
+        if get(ctx.guild.roles, name=rolename):
+            for member in ctx.guild.members:
+                if role in member.roles:
+                        await member.remove_roles(role)
+                        embed.remove_field(1)
+                        embed.remove_field(0)
+                        userswithrole -= 1
+                        userswithoutrole += 1
+                        embed.add_field(name=f"Users with role", value=f"**{userswithrole}**", inline=True)
+                        embed.add_field(name=f"Users without role", value=f"**{userswithoutrole}**", inline=True)
+                        await discord.Message.edit(msg, embed=embed)
+                else:
+                    continue
+
+        embed.set_footer(text=f"Finished removing {rolename} role from members")
+        await msg.edit(embed=embed)
+
+    @commands.command(aliases=["shop"])
+    async def servershop(self, ctx, *, description):
+        channel = self.bot.get_channel(703638893211418665)
+        embed = discord.Embed(title="Server Shop", description=description, color=0xc0d4ff)
+        embed.set_author(name=ctx.author.guild.name, icon_url=ctx.author.guild.icon_url)
+        embed.set_footer(text="Prices are subject to change, and refunds are not permitted\nDM Kirie#0001 for futher information/payment")
+
+        await channel.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Utility(bot))

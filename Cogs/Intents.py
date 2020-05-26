@@ -15,9 +15,6 @@ class Intents(commands.Cog, name='Intents'):
 
         if message.author.bot:
             return
-            
-        if isinstance(message.channel, discord.DMChannel):
-            return
 
         suffix = ["may"]
 
@@ -91,4 +88,4 @@ class Intents(commands.Cog, name='Intents'):
 
 def setup(bot):
     bot.add_cog(Intents(bot))
-    print('Intents Loaded.')
+    print('Intents Loaded')

@@ -100,7 +100,7 @@ class Fun(commands.Cog, name="Fun.py"):
     @encounter.error
     async def encountererror(self, ctx, error):
         errormsg = await ctx.send('Please specify an amount + name to encounter.\nUsage: **m!encounter <amount> <pokemon>**')
-        await discord.Message.delete(errormsg, delay=3)
+        await discord.Message.delete(errormsg, delay=5)
         print(error)
 
     @commands.command()
@@ -115,12 +115,6 @@ class Fun(commands.Cog, name="Fun.py"):
 
         await ctx.send(embed=embed)
 
-    @fakebal.error
-    async def fakebal_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
-
     @commands.command()
     async def say(self, ctx, *, message=None):
         if message is None:
@@ -128,7 +122,7 @@ class Fun(commands.Cog, name="Fun.py"):
             return
 
         await discord.Message.delete(ctx.message, delay=None)
-        await ctx.send(message.title())
+        await ctx.send(message.capitalize())
 
     @commands.command()
     async def hug(self, ctx, *, member: discord.Member = None):
@@ -166,7 +160,7 @@ class Fun(commands.Cog, name="Fun.py"):
                 "https://media.tumblr.com/tumblr_m1oqhy8vrH1qfwmvy.gif",
                 "https://cdn.weeb.sh/images/ryCG-OatM.gif"]
         gif = random.choice(hugs)
-        embed = discord.Embed(title=title, description=None, color=0xc0d4ff)
+        embed = discord.Embed(title=title, color=0xc0d4ff)
         embed.set_image(url=gif)
         if member is None or ctx.author == member:
             embed.set_footer(text=f"Maybe {ctx.author.display_name} will have someone to hug next time.")
@@ -177,7 +171,7 @@ class Fun(commands.Cog, name="Fun.py"):
     async def hug_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.BadArgument):
             errormsg = await ctx.send("Please specify another user to hug.\nUsage: **m!hug <user>**")
-            await discord.Message.delete(errormsg, delay=3)
+            await discord.Message.delete(errormsg, delay=5)
 
     @commands.command()
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -208,7 +202,7 @@ class Fun(commands.Cog, name="Fun.py"):
 
         gif = random.choice(gifs)
 
-        embed = discord.Embed(title=title, description=None, color=0xc0d4ff)
+        embed = discord.Embed(title=title, color=0xc0d4ff)
         embed.set_image(url=gif)
         if member is None or ctx.author == member:
             embed.set_footer(text=f"Maybe {ctx.author.display_name} will have someone to kiss next time.")
@@ -219,11 +213,11 @@ class Fun(commands.Cog, name="Fun.py"):
     async def kiss_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.BadArgument):
             errormsg = await ctx.send("Please specify another user to kiss.\nUsage: **m!kiss <user>**")
-            await discord.Message.delete(errormsg, delay=3)
+            await discord.Message.delete(errormsg, delay=5)
 
         if isinstance(error, commands.CommandOnCooldown):
             errormsg = await ctx.send(f"Please {ctx.author.display_name}, take two seconds to breathe.")
-            await discord.Message.delete(errormsg, delay=3)
+            await discord.Message.delete(errormsg, delay=5)
 
     @commands.command(aliases=["backward", "backwards"])
     async def reverse(self, ctx, *, message = None):
@@ -233,7 +227,7 @@ class Fun(commands.Cog, name="Fun.py"):
 
         await ctx.send(message[::-1])
 
-    @commands.command()
+    '''@commands.command()
     async def pokemon(self, ctx):
         hp = random.randint(0, 31)
         attack = random.randint(0, 31)
@@ -265,44 +259,7 @@ class Fun(commands.Cog, name="Fun.py"):
         embed.set_image(url=ctx.author.avatar_url)
         embed.set_footer(text="Selected Pokémon: 1/1 - Use p!back and p!next to cycle through your pokémon!")
 
-        await ctx.send(embed=embed)
-
-    """@commands.command()
-    async def info(self, ctx, suffix):
-        if suffix == "latest":
-            hp = random.randint(31, 31)
-            attack = random.randint(31, 31)
-            defense = random.randint(31, 31)
-            spatk = random.randint(31, 31)
-            spdef = 30
-            speed = random.randint(31, 31)
-            totalIV = round((hp + attack + defense + spatk + spdef + speed) * 0.53764, 2)
-
-            if totalIV == 50 or totalIV == 0 or totalIV == 100:
-                totalIV = round((hp + attack + defense + spatk + spdef + speed) * 0.53764)
-
-            level = random.randint(1, 42)
-            levelxp = level*60
-
-            embed = discord.Embed(title=f":star: Level {level} Zeraora", description=f"1/{levelxp}XP\n"
-                                            f"**Type:** Electric\n"
-                                            f"**Nature:** Lonely\n"
-                                            f"**HP:** 88 - IV: {hp}/31\n"
-                                            f"**Attack:** 112 - IV: {attack}/31\n"
-                                            f"**Defense:** 75 - IV: {defense}/31\n"
-                                            f"**Sp. Atk:** 102 - IV: {spatk}/31\n"
-                                            f"**Sp. Def:** 80 - IV: {spdef}/31\n"
-                                            f"**Speed:** 143 - IV: {speed}/31\n"
-                                            f"**Total IV %:** {totalIV}%", color=0xc0d4ff)
-
-            embed.set_author(name="Professor Oak", icon_url="https://images-ext-2.discordapp.net/external/oMthNLlPT-Sjg-4nanyqxHDBH4iE7N8CVUh0WFjlxAc/https/i.imgur.com/8ZpM4tb.jpg")
-            embed.set_thumbnail(url=ctx.author.avatar_url)
-            embed.set_image(url="https://i.imgur.com/CU9dyLg.png")
-            embed.set_footer(text="Selected Pokémon: 1/1 - Use p!back and p!next to cycle through your pokémon!")
-
-            await ctx.send(embed=embed)
-        else:
-            return"""
+        await ctx.send(embed=embed)'''
 
 def setup(bot):
     bot.add_cog(Fun(bot))

@@ -29,12 +29,6 @@ class ModCog(commands.Cog, name='Moderation'):
         await ctx.author.send(embed=embed)
         await ctx.send("Sent you a DM containing Moderation commands!")
 
-    @moderation.error
-    async def moderation_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
-
     """@commands.command(aliases=["announce"])
     @commands.cooldown(1, 300, commands.BucketType.guild)
     @commands.has_permissions(administrator=True)
@@ -48,17 +42,7 @@ class ModCog(commands.Cog, name='Moderation'):
         for member in guild.members:
             if not member.bot:
                 await discord.DMChannel.send(member, embed=embed)
-        await ctx.channel.purge(limit=1)
-
-    @announcement.error
-    async def announcement_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
-
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to send an announcement.")
-            await discord.Message.delete(errormsg, delay=3)"""
+        await ctx.channel.purge(limit=1)"""
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
@@ -76,12 +60,6 @@ class ModCog(commands.Cog, name='Moderation'):
 
         await member.kick(reason=reason)
         await ctx.send(embed=embed)
-
-    @kick.error
-    async def kick_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -118,9 +96,6 @@ class ModCog(commands.Cog, name='Moderation'):
 
     @mute.error
     async def mute_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=5)
         print(error)
 
     @commands.command()
@@ -152,12 +127,6 @@ class ModCog(commands.Cog, name='Moderation'):
 
         await ctx.send(embed=embed)
 
-    @ban.error
-    async def ban_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
-
     @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
     async def softban(self, ctx, member: discord.Member, *, reason=None):
@@ -177,12 +146,6 @@ class ModCog(commands.Cog, name='Moderation'):
 
         await ctx.send(embed=embed)
 
-    @softban.error
-    async def softban_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
-
     @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, *, member: discord.Member):
@@ -197,126 +160,103 @@ class ModCog(commands.Cog, name='Moderation'):
                 await ctx.send()
                 return
 
-    @unban.error
-    async def unban_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
-
-        print(error)
-
     @commands.command(aliases=["clean", "purge"], pass_context=True)
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def clear(self, ctx, amount=5):
+        if amount > 1000:
+            await ctx.send("You can only clear up to 1000 messages at once!")
+            return
+            
         await ctx.channel.purge(limit=amount)
         return
 
-    @clear.error
-    async def clear_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to purge the chat.")
-            await discord.Message.delete(errormsg, delay=3)
-        
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
+    def is_me(self):
+        async def predicate(ctx):
+            return ctx.author.id == 154342861851197440
+        return commands.check(predicate)
 
     @commands.command(aliases=["update"])
+    @commands.check(is_me)
     async def reload(self, ctx, *, extension = None):
-        if ctx.author.id == 154342861851197440:
-            extensions = ['Cogs.Balance',
-                'Cogs.Intents',
-                'Cogs.Moderation',
-                'Cogs.Utility',
-                'Cogs.Information',
-                'Cogs.Fun',
-                'Cogs.Gambling',
-                'Cogs.PodRacing',
-                'Cogs.Fishing']
+        extensions = ['Cogs.Balance',
+            'Cogs.EventHandler',
+            'Cogs.Intents',
+            'Cogs.Moderation',
+            'Cogs.Utility',
+            'Cogs.Information',
+            'Cogs.Fun',
+            'Cogs.Gambling',
+            'Cogs.Racing',
+            'Cogs.Fishing']
 
-            embed = discord.Embed(title="Reloading Scripts", description=None, color=0xc0d4ff)
+        embed = discord.Embed(title="Reloading Scripts", color=0xc0d4ff)
 
-            if extension is not None:
-                extensions = extension.lower()
+        if extension is not None:
+            extensions = extension.lower()
 
-                if extension == "balance":
-                    extension = "Cogs.Balance"
-                elif extension == "intents":
-                    extension = "Cogs.Intents"
-                elif extension == "moderation" or extension == "mod":
-                    extension = "Cogs.Moderation"
-                elif extension == "utility":
-                    extension = "Cogs.Utility"
-                elif extension == "information":
-                    extension = "Cogs.Information"
-                elif extension == "fun":
-                    extension = "Cogs.Fun"
-                elif extension == "gambling":
-                    extension = "Cogs.Gambling"
-                elif extension == "podracing" or extension == "racing":
-                    extension = "Cogs.PodRacing"
-                elif extension == "fishing":
-                    extension = "Cogs.Fishing"
+            if extension == "balance":
+                extension = "Cogs.Balance"
+            elif extension == "intents":
+                extension = "Cogs.Intents"
+            elif extension == "moderation" or extension == "mod":
+                extension = "Cogs.Moderation"
+            elif extension == "utility":
+                extension = "Cogs.Utility"
+            elif extension == "information":
+                extension = "Cogs.Information"
+            elif extension == "fun":
+                extension = "Cogs.Fun"
+            elif extension == "gambling":
+                extension = "Cogs.Gambling"
+            elif extension == "racing" or extension == "race":
+                extension = "Cogs.Racing"
+            elif extension == "fishing":
+                extension = "Cogs.Fishing"
+            elif extension == "events":
+                extension = "Cogs.EventHandler"
 
-                if extensions:
-                    try:
-                        embed = discord.Embed(title=f"Reloaded Extension: {extension[5:]}", description=None, color=0xc0d4ff)
-                        self.bot.reload_extension(extension)
-
-                    except Exception as e:
-                        if isinstance(e, discord.ext.commands.ExtensionAlreadyLoaded):
-                            embed.add_field(name=extensions, value=f"**{extensions[5:]}** is already loaded.", inline=False)
-
-                        if isinstance(e, discord.ext.commands.ExtensionNotFound):
-                            embed.add_field(name=extensions, value=f"**{extensions[5:]}** not found.", inline=False)
-
-                        embed = discord.Embed(title="Error", description=None, color=0xc0d4ff)
-                        embed.add_field(name=extensions, value=e, inline=False)
-
-            msg = await ctx.send(embed=embed)
-            
-            for extension in extensions:
+            if extensions:
                 try:
+                    embed = discord.Embed(title=f"Reloaded Extension: {extension[5:]}", color=0xc0d4ff)
                     self.bot.reload_extension(extension)
-                    embed.add_field(name=extension[5:], value=f"Reloaded **{extension[5:]}**", inline=False)
-                    await asyncio.sleep(1)
-                    await discord.Message.edit(msg, embed=embed)
-                    
+
                 except Exception as e:
                     if isinstance(e, discord.ext.commands.ExtensionAlreadyLoaded):
-                        embed.add_field(name=extension, value=f"**{extension[5:]}** is already loaded.", inline=False)
-                        await asyncio.sleep(1)
-                        await discord.Message.edit(msg, embed=embed)
+                        embed.add_field(name=extensions, value=f"**{extensions[5:]}** is already loaded.", inline=False)
 
                     if isinstance(e, discord.ext.commands.ExtensionNotFound):
                         embed.add_field(name=extensions, value=f"**{extensions[5:]}** not found.", inline=False)
-                        await asyncio.sleep(1)
-                        await discord.Message.edit(msg, embed=embed)
 
-                    print(f"{extension[5:]} cannot be loaded. {e}")
+                    embed = discord.Embed(title="Error", color=0xc0d4ff)
+                    embed.add_field(name=extensions, value=e, inline=False)
 
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def giveroleall(self, ctx, *, rolename):
-        if get(ctx.guild.roles, name=rolename):
-            role = discord.utils.get(ctx.guild.roles, name=rolename)
-            for member in ctx.guild.members:
-                if role in member.roles or member.bot:
-                        continue
-                else:
-                    await member.add_roles(role)
-                    msg = await ctx.send(f"Added {rolename} role to {member.display_name}")
-                    await discord.Message.delete(msg, delay=3)
+        msg = await ctx.send(embed=embed)
+        
+        for extension in extensions:
+            try:
+                self.bot.reload_extension(extension)
+                embed.add_field(name=extension[5:], value=f"Reloaded **{extension[5:]}**", inline=False)
+                await asyncio.sleep(1)
+                await discord.Message.edit(msg, embed=embed)
+                
+            except Exception as e:
+                if isinstance(e, discord.ext.commands.ExtensionAlreadyLoaded):
+                    embed.add_field(name=extension, value=f"**{extension[5:]}** is already loaded.", inline=False)
+                    await asyncio.sleep(1)
+                    await discord.Message.edit(msg, embed=embed)
 
-        await ctx.send(f"Finished adding {rolename} role to members.")
+                if isinstance(e, discord.ext.commands.ExtensionNotFound):
+                    embed.add_field(name=extensions, value=f"**{extensions[5:]}** not found.", inline=False)
+                    await asyncio.sleep(1)
+                    await discord.Message.edit(msg, embed=embed)
 
-    @giveroleall.error
-    async def gra_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            errormsg = await ctx.send("You are not permitted to use this command.")
-            await discord.Message.delete(errormsg, delay=3)
+                print(f"{extension[5:]} cannot be loaded. {e}")
+
+    @reload.error
+    async def reload_error(self, ctx, error):
+        await ctx.send(error)
 
 def setup(bot):
     bot.add_cog(ModCog(bot))
-    print('Moderation loaded.')
+    print('Moderation loaded')

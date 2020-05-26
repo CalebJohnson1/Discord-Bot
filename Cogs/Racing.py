@@ -5,14 +5,13 @@ import discord
 from discord.ext import commands
 
 
-class PodRacing(commands.Cog, name="PodRacing.py"):
+class Racing(commands.Cog, name="Racing.py"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["podracing", "podrace", "r", "pr"])
+    @commands.command(aliases=["r"])
     @commands.cooldown(1, 90, commands.BucketType.user)
     async def race(self, ctx):
-        racerone = "https://free3d.com/imgd/l35591-anakin-skywalkers-podracer-84172.png"
         suffix = ""
         place = ""
         completedlaps = random.randint(2, 4)
@@ -41,22 +40,22 @@ class PodRacing(commands.Cog, name="PodRacing.py"):
 
         pointsgained = 30
 
-        planets = ["Tatooine", "Coruscant", "Hoth", "Naboo", "Alderaan", "Bespin", "Mustafar", "Yavin",
-                   "Dagobah", "Kashyyyk", "Kamino", "Geonosis", "Corellia", "Dantooine", "Ryloth", "Moraband",
-                   "Cato Neimoidia", "Byss", "Onderon", "Nal Hutta", "Polis Massa", "Malachor V", "Florrum", "Ithor",
-                   "Ossus", "Taris", "Mandalore", "Haruun Kal", "Exodeen", "Malastare", "Kergans", "Theron",
-                   "Cantonica"]
+        places = ["Gotham City", "Sunnydale", "Metropolis", "Central City", "Star City", "Springfield", "Hill Valley",
+                  "Duckburg", "Celadon City", "Kamina City", "Shiganshina", "Sidonia", "Ecbatana", "Alubarna",
+                  "Tokyo", "New York City", "Akihabara", "R'lyeh", "Radiator Springs", "Azalea Town", "Cinnabar Island", 
+                  "Dewford Town", "Fortree City", "Larvaridge Town", "Mauville City", "Mossdeep City", "Lilycove City",
+                  "Littleroot Town", "Oldale Town", "Petalburg City", "Rustboro City", "Slateport City", "Sootopolis City",
+                  "Verdanturf Town", "Attilan", "Atlantis", "Asgard"]
 
-        startdesc = f"You travel through {random.choice(planets)} in a pod race."
+        startdesc = f"You travel through {random.choice(places)} in a race."
         description = f"{startdesc}\nYou finish in **{int(place)}{suffix}** place out of 25 racers!"
 
-        embed = discord.Embed(title="Pod Racing", description=description, color=0xc0d4ff)
+        embed = discord.Embed(title="Racing", description=description, color=0xc0d4ff)
         embed.add_field(name="Placement", value=str(place), inline=True)
         embed.add_field(name="Laps Completed", value=completedlaps, inline=False)
-        embed.add_field(name="Galactic Credits Gained", value=str(coinsgained), inline=True)
-        embed.add_field(name="Galactic Points Earned", value=str(pointsgained), inline=True)
-
-        embed.set_thumbnail(url=racerone)
+        embed.add_field(name="Credits Gained", value=str(coinsgained), inline=True)
+        embed.add_field(name="Points Earned", value=str(pointsgained), inline=True)
+        embed.set_thumbnail(url="https://i.imgur.com/189DHqc.png")
 
         db = sqlite3.connect('database.sqlite')
         cursor = db.cursor()
@@ -85,15 +84,7 @@ class PodRacing(commands.Cog, name="PodRacing.py"):
 
         await ctx.send(embed=embed)
 
-    @race.error
-    async def race_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait **{round(error.retry_after, 2)}** seconds to complete another race.")
-            await discord.Message.delete(errormsg, delay=3)
-
-        print(error)
-
 
 def setup(bot):
-    bot.add_cog(PodRacing(bot))
-    print("PodRacing Loaded")
+    bot.add_cog(Racing(bot))
+    print("Racing Loaded")

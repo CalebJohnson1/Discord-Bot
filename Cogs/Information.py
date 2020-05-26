@@ -34,13 +34,8 @@ class Information(commands.Cog, name="Information.py"):
 
     @info.error
     async def infoerror(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait another {round(error.retry_after, 2)} seconds to info a user.")
-            await discord.Message.delete(errormsg, delay=3)
-        else:
-            errormsg = await ctx.send("Please specify a member name, ex: <m!info @May>")
-            await discord.Message.delete(errormsg, delay=3)
-            print(error)
+        errormsg = await ctx.send("Invalid user, ex: <m!info @May>")
+        await discord.Message.delete(errormsg, delay=5)
 
     @commands.command(aliases=["av"])
     async def avatar(self, ctx, *, member: discord.Member = None):
@@ -62,9 +57,8 @@ class Information(commands.Cog, name="Information.py"):
 
     @avatar.error
     async def avatar_error(self, ctx, error):
-        errormsg = await ctx.send("Please specify a member, usage: <m!avatar <username>")
-        await discord.Message.delete(errormsg, delay=3)
-        print(error)
+        errormsg = await ctx.send("Invalid user, usage: <m!avatar <username>")
+        await discord.Message.delete(errormsg, delay=5)
 
     @commands.command()
     async def members(self, ctx):

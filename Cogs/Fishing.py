@@ -10,52 +10,39 @@ class Fishing(commands.Cog, name="Fishing.py"):
         self.bot = bot
 
     @commands.command(aliases=["fishing", "f"])
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    # @commands.cooldown(1, 30, commands.BucketType.user)
     async def fish(self, ctx):
-        fishpic = ["https://i.imgur.com/p1JN0im.png", "https://i.imgur.com/irgi2dt.png", "https://i.imgur.com/5YtcB9V.png",
-                   "https://i.imgur.com/mj10V9f.png", "https://i.imgur.com/We5pQUB.png", "https://i.imgur.com/4FLLTnL.png"]
-
-        fish = ""
-        coinsgained = 0
+        fish = "Magikarp"
+        coinsgained = 50
         pointsgained = 10
-        url = random.choice(fishpic)
+        url = "https://i.imgur.com/Dkj3fJw.png"
 
         if random.randint(1, 100) == 1:
-            url = "https://i.imgur.com/aGUUadV.png"
+            url = "https://i.imgur.com/Ygof8MD.png"
             coinsgained = 100
-            fish = "Sando Aqua Monster"
+            fish = "Lapras"
 
         if random.randint(1, 1000) == 1:
-            url = "https://vignette.wikia.nocookie.net/starwars/images/3/3d/Opee-Sea-Killer-SWCT.png/revision/latest?cb=20170623053643"
+            url = "https://i.imgur.com/Cb4MZrG.png"
             coinsgained = 500
-            fish = "Opee Sea Killer"
+            fish = "Kyogre"
 
-        places = ["on Naboo", "at Otoh Gunga", "at Lake Paonga", "at The Abyss"]
+        if random.randint(1, 4096) == 1:
+            url = "https://i.imgur.com/0uquYEz.png"
+            coinsgained = 1000
+            fish = "Shiny Magikarp"
 
-        if url == fishpic[0]:
-            fish = "Doo Scalefish"
-            coinsgained = 15
-        if url == fishpic[1]:
-            fish = "Faa Scalefish"
-            coinsgained = 10
-        if url == fishpic[2]:
-            fish = "Laa Scalefish"
-            coinsgained = 10
-        if url == fishpic[3]:
-            fish = "See Scalefish"
-            coinsgained = 5
-        if url == fishpic[4]:
-            fish = "Tee Scalefish"
-            coinsgained = 25
-        if url == fishpic[5]:
-            fish = "Colo Claw Fish"
-            coinsgained = 10
-            places = ["at the Cordaxian Sea"]
+        places = ["Gotham City", "Sunnydale", "Metropolis", "Central City", "Star City", "Springfield", "Hill Valley",
+                  "Duckburg", "Celadon City", "Kamina City", "Shiganshina", "Sidonia", "Ecbatana", "Alubarna",
+                  "Tokyo", "New York City", "Akihabara", "R'lyeh", "Radiator Springs", "Azalea Town", "Cinnabar Island", 
+                  "Dewford Town", "Fortree City", "Larvaridge Town", "Mauville City", "Mossdeep City", "Lilycove City",
+                  "Littleroot Town", "Oldale Town", "Petalburg City", "Rustboro City", "Slateport City", "Sootopolis City",
+                  "Verdanturf Town", "Attilan", "Atlantis", "Asgard"]
 
-        description = f"You went fishing {random.choice(places)} and caught a {fish}!"
+        description = f"You go fishing at {random.choice(places)} and catch a {fish}!"
         embed = discord.Embed(title="Fishing", description=description, color=0xc0d4ff)
-        embed.add_field(name="Galactic Credits Gained", value=str(coinsgained), inline=True)
-        embed.add_field(name="Galactic Points Gained", value=str(pointsgained), inline=True)
+        embed.add_field(name="Credits Gained", value=str(coinsgained), inline=True)
+        embed.add_field(name="Points Gained", value=str(pointsgained), inline=True)
         embed.set_thumbnail(url=url)
 
         db = sqlite3.connect('database.sqlite')
@@ -84,14 +71,6 @@ class Fishing(commands.Cog, name="Fishing.py"):
         db.commit()
 
         await ctx.send(embed=embed)
-
-    @fish.error
-    async def fish_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            errormsg = await ctx.send(f"Please wait **{round(error.retry_after, 2)}** seconds to fish again.")
-            await discord.Message.delete(errormsg, delay=3)
-
-        print(error)
 
 
 def setup(bot):
