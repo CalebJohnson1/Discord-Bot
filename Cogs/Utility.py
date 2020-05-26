@@ -24,7 +24,7 @@ class Utility(commands.Cog, name="Utility.py"):
                               color=0xc0d4ff)
         embed.add_field(name="Information", value="m!info, m!avatar, m!members",
                         inline=False)
-        embed.add_field(name="Utility", value="m!help, m!suggest, m!ping, m!giveroleall, m!removeroleall, m!guildicon")
+        embed.add_field(name="Utility", value="m!help, m!suggest, m!ping, m!giveroleall, m!removeroleall, m!guildicon, m!startevent")
         embed.add_field(name="Economy", value="m!credits, m!points, m!race, m!fish", inline=False)
         embed.add_field(name="Gambling", value="Coming Soon", inline=False)
         embed.add_field(name="Interaction", value="m!hug, m!kiss", inline=False)
