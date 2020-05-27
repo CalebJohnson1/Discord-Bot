@@ -160,14 +160,14 @@ class Utility(commands.Cog, name="Utility.py"):
         embed.set_footer(text=f"Finished removing {rolename} role from members")
         await msg.edit(embed=embed)
 
-    @commands.command(aliases=["shop"])
+    '''@commands.command(aliases=["shop"])
     async def servershop(self, ctx, *, description):
-        channel = self.bot.get_channel(703638893211418665)
+        channel = self.bot.get_channel(714600429203226632)
         embed = discord.Embed(title="Server Shop", description=description, color=0xc0d4ff)
         embed.set_author(name=ctx.author.guild.name, icon_url=ctx.author.guild.icon_url)
         embed.set_footer(text="Prices are subject to change, and refunds are not permitted\nDM Kirie#0001 for futher information/payment")
 
-        await channel.send(embed=embed)
+        await channel.send(embed=embed)'''
 
 def setup(bot):
     bot.add_cog(Utility(bot))

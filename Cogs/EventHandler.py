@@ -37,14 +37,14 @@ class EventHandler(commands.Cog, name="EventHandler.py"):
     @commands.command(aliases=["event"])
     @commands.has_permissions(ban_members=True)
     async def startevent(self, ctx):
-        channel = ctx.message.channel
+        msgchannel = ctx.message.channel
         typeoptions = ["custom", "catch", "invite", "message"]
         types = ["Normal", "Fire", "Fighting", "Water", "Flying", "Grass", "Poison", "Electric",
                  "Ground", "Psychic", "Rock", "Ice", "Bug", "Dragon", "Ghost", "Dark", "Steel", "Fairy"]
         invitedescription = "Invite users and gain rewards!\n\nInvites you must reach to gain rewards:\n:diamond_shape_with_a_dot_inside:1 Invite\n:diamond_shape_with_a_dot_inside:2 Invites\n:diamond_shape_with_a_dot_inside:3 Invites\n:diamond_shape_with_a_dot_inside:4 Invites\n:diamond_shape_with_a_dot_inside:5 Invites"
 
         def check(m):
-            return m.author == ctx.author and m.channel == channel
+            return m.author == ctx.author and m.channel == msgchannel
 
         description = None
 
@@ -644,10 +644,6 @@ class EventHandler(commands.Cog, name="EventHandler.py"):
         except ConnectionResetError:
             await ctx.send(f"Connection has been lost, {event.content} event has been removed")
             await discord.Message.delete(msg, delay=0)
-
-    @startevent.error
-    async def se_error(self, ctx, error):
-        await ctx.send(error)
 
 def setup(bot):
     bot.add_cog(EventHandler(bot))
