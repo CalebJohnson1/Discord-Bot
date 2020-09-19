@@ -1,0 +1,5 @@
+*.pyc
+venv
+.vscode
+database.sqlite
+database.db.sqbpro
