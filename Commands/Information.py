@@ -6,7 +6,8 @@ class Information(commands.Cog, name="Information.py"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(name='info', usage='m!info <mention>',
+    description='Retrieve information about a user.')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def info(self, ctx, *, member: discord.Member = None):
         if member is None:
@@ -30,14 +31,12 @@ class Information(commands.Cog, name="Information.py"):
         if member.bot:
             embed.set_footer(text="This user is a bot.")
 
-        await ctx.send(embed=embed)
+        await ctx.message.reply(embed=embed, mention_author = False)
 
-    @info.error
-    async def infoerror(self, ctx, error):
-        errormsg = await ctx.send("Invalid user, ex: <m!info @May>")
-        await discord.Message.delete(errormsg, delay=5)
-
-    @commands.command(aliases=["av"])
+    @commands.command(name='avatar', aliases=["pfp"],
+    usage='m!avatar <mention>',
+    description='Gets the specified users avatar.')
+    @commands.cooldown(1, 1, commands.BucketType.user)
     async def avatar(self, ctx, *, member: discord.Member = None):
         if member is None:
             member = ctx.author
@@ -53,14 +52,16 @@ class Information(commands.Cog, name="Information.py"):
         if member.bot:
             embed.set_footer(text="This user is a bot.")
 
-        await ctx.send(embed=embed)
+        await ctx.message.reply(embed=embed, mention_author = False)
 
     @avatar.error
     async def avatar_error(self, ctx, error):
-        errormsg = await ctx.send("Invalid user, usage: <m!avatar <username>")
+        errormsg = await ctx.message.reply("Invalid user, usage: <m!avatar <username>", mention_author = False)
         await discord.Message.delete(errormsg, delay=5)
 
-    @commands.command()
+    @commands.command(name='members', usage='m!members',
+    description='Displays an embed showing all members, humans, bots, and offline/offline users in the server.')
+    @commands.cooldown(1, 1, commands.BucketType.user)
     async def members(self, ctx):
         bots = 0
         online = 0
@@ -76,14 +77,13 @@ class Information(commands.Cog, name="Information.py"):
 
         embed = discord.Embed(title=f"{ctx.author.guild}", description=None, color=0xc0d4ff)
         embed.add_field(name="All Members", value=ctx.author.guild.member_count, inline=True)
-        embed.add_field(name="Humans", value=ctx.author.guild.member_count - bots, inline=True)
-        embed.add_field(name="Bots", value=str(bots), inline=True)
+        embed.add_field(name="Humans", value=str(bots), inline=True)
+        embed.add_field(name="Bots", value=ctx.author.guild.member_count - bots, inline=True)
         embed.add_field(name="Online", value=str(online), inline=True)
         embed.add_field(name="Offline", value=str(offline), inline=True)
 
-        await ctx.send(embed=embed)
+        await ctx.message.reply(embed=embed, mention_author = False)
 
 
 def setup(bot):
     bot.add_cog(Information(bot))
-    print("Information Loaded")
