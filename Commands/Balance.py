@@ -29,7 +29,7 @@ class Balance(commands.Cog, name="Balance.py"):
             db.commit()
 
     @commands.command(name='credits', aliases=["cred", "creds"],
-    usage='m!credits',
+    usage='credits',
     description='Checks how many Credits you currently have.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def credits(self, ctx, user: discord.User = None):
@@ -70,7 +70,7 @@ class Balance(commands.Cog, name="Balance.py"):
     async def credits_error(self, error):
         print(error)
 
-    @commands.command(name='points', usage='m!points',
+    @commands.command(name='points', usage='points',
     description='Checks how many Points you currently have.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def points(self, ctx, user: discord.User = None):
@@ -111,7 +111,7 @@ class Balance(commands.Cog, name="Balance.py"):
     async def points_error(self, error):
         print(error)
 
-    @commands.command(name='shards', usage='m!shards',
+    @commands.command(name='shards', usage='shards',
     description='Checks how many Shards you currently have.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def shards(self, ctx, user: discord.User = None):
@@ -137,7 +137,7 @@ class Balance(commands.Cog, name="Balance.py"):
                 f"SELECT UserID, isStarted, Shards FROM player WHERE UserID = {ctx.author.id}")
             result = cursor.fetchone()
             if not result[1]:
-                await ctx.message.reply("You must have started using **m!start** if you wish to see your shards")
+                await ctx.message.reply("You must have started using **::start** if you wish to see your shards")
             else:
                 embed = discord.Embed(title=f"{ctx.author.display_name}'s Shards: {int(result[2]):,} ",
                                 color=0xc0d4ff)

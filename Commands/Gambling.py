@@ -10,7 +10,7 @@ class Gambling(commands.Cog, name="Gambling.py"):
         self.bot = bot
 
     @commands.command(name='55x2', aliases=["55"],
-    usage='m!55x2 <amount>',
+    usage='55x2 <amount>',
     description='Roll a 100-sided dice! If the dice rolls over 55, you win.')
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def __55__(self, ctx, amount):
@@ -55,7 +55,7 @@ class Gambling(commands.Cog, name="Gambling.py"):
 
         await ctx.message.reply(embed=embed, mention_author = False)
 
-    @commands.command(name='dice', usage='m!dice <amount>',
+    @commands.command(name='dice', usage='dice <amount>',
     description='The user and bot both roll a 100-sided dice. If the user rolls higher than the bot, the user wins.')
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def dice(self, ctx, amount):
@@ -79,13 +79,13 @@ class Gambling(commands.Cog, name="Gambling.py"):
 
         try:
             embed = discord.Embed(title="Rolling Dice...", description=f"{ctx.author.display_name} Rolls: \n"
-                                                                        "May Rolls: ", color=gambleColor)
+                                                                        "Gaia Rolls: ", color=gambleColor)
             
             newembed = discord.Embed(title="Rolling Dice...", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
-                                                                        f"May Rolls: ", color=gambleColor)
+                                                                        f"Gaia Rolls: ", color=gambleColor)
             
             finalembed = discord.Embed(title="Rolling Dice...", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
-                                                       f"May Rolls: **{botroll}**", color=gambleColor)
+                                                       f"Gaia Rolls: **{botroll}**", color=gambleColor)
         except Exception as e:
             print(e)
             return
@@ -103,17 +103,17 @@ class Gambling(commands.Cog, name="Gambling.py"):
             if userroll > botroll:
                 val = (int(balance) + int(amount), str(ctx.author.id))
                 finalembed = discord.Embed(title=f"{ctx.author.display_name} wins {amount} credits!", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
-                                                                        f"May Rolls: **{botroll}**\n", color=gambleColor)
+                                                                        f"Gaia Rolls: **{botroll}**\n", color=gambleColor)
                 await discord.Message.edit(msg, embed=finalembed)
             elif userroll < botroll:
                 val = (int(balance) - int(amount), str(ctx.author.id))
                 finalembed = discord.Embed(title=f"{ctx.author.display_name} loses {amount} credits...", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
-                                                                        f"May Rolls: **{botroll}**\n", color=gambleColor)
+                                                                        f"Gaia Rolls: **{botroll}**\n", color=gambleColor)
                 await discord.Message.edit(msg, embed=finalembed)
             else:
                 val = (int(balance), str(ctx.author.id))
                 finalembed = discord.Embed(title=f"Tie!", description=f"{ctx.author.display_name} Rolls: **{userroll}** \n"
-                                                                        f"May Rolls: **{botroll}**\n", color=gambleColor)
+                                                                        f"Gaia Rolls: **{botroll}**\n", color=gambleColor)
                 await discord.Message.edit(msg, embed=finalembed)
             
             cursor.execute(sql, val)

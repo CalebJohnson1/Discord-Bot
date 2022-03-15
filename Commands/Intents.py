@@ -1,8 +1,11 @@
 import random
+import randfacts
+from jokeapi import Jokes
 
 import discord
 from discord.ext import commands
 
+# Plan: Update all of this, use google dialogflow api for intents
 
 class Intents(commands.Cog, name='Intents'):
     def __init__(self, bot):
@@ -19,7 +22,7 @@ class Intents(commands.Cog, name='Intents'):
         if message.channel.id != 943675388616384573:
             return
 
-        listener = ["may"]
+        listener = ["gaia"]
 
         terms = ["hows it goin", "hows it going", "hows it hanging", "hows it hangin",
                  "hows it going helpful", "how are you", "how is your day", "hows your day"]
@@ -33,20 +36,6 @@ class Intents(commands.Cog, name='Intents'):
                     await message.reply(f"{random.choice(choices)}", mention_author = False)
                     return
 
-        pokefacts = ["pokemon", "pokémon"]
-        pokefactss = ["fact"]
-        with open("PokemonFacts.txt", "r") as f:
-            pokemonfacts = random.choice(f.readlines())
-        for pokemessage in pokefacts:
-            for messagesuf in listener:
-                for givemee in someprefixes:
-                    for pokemessagee in pokefactss:
-                        if message.content.lower().count(pokemessage) and message.content.lower().count(messagesuf) and\
-                                message.content.lower().count(pokemessagee) or message.content.lower().count(pokemessage)\
-                                and message.content.lower().count(givemee) and message.content.lower().count(pokemessagee):
-                            await message.reply(pokemonfacts, mention_author = False)
-                            return
-
         quotess = ["quote"]
         with open("Quotes.txt", "r") as m:
             quotes = random.choice(m.readlines())
@@ -59,25 +48,25 @@ class Intents(commands.Cog, name='Intents'):
                         return
 
         factss = ["fact"]
-        with open("Facts.txt", "r") as f:
-            facts = random.choice(f.readlines())
+        fact = randfacts.get_fact()
         for fmessage in factss:
             for messagesuf in listener:
                 for givemee in someprefixes:
                     if message.content.lower().count(fmessage) and message.content.lower().count(messagesuf) or \
                             message.content.lower().count(fmessage) and message.content.lower().count(givemee):
-                        await message.reply(facts, mention_author = False)
+                        await message.reply(fact, mention_author = False)
                         return
 
         jokess = ["jokes", "joke"]
-        with open("Jokes.txt", "r") as j:
-            jokes = random.choice(j.readlines())
         for joke in jokess:
             for jokesuf in listener:
                 for givemee in someprefixes:
                     if message.content.lower().count(joke) and message.content.lower().count(jokesuf) or \
                             message.content.lower().count(joke) and message.content.lower().count(givemee):
-                        await message.reply(jokes, mention_author = False)
+                        j = await Jokes()
+                        joke = j.get_joke()
+                        embed = discord.Embed(title="Random Joke", description = f'**{joke}**')
+                        await message.reply(embed=embed, mention_author = False)
                         return
 
         nice = ["good job", "great job", "excellent", "fantastic", "appreciate"]

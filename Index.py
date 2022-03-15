@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.utils import get
 
 def read_token():
     with open('token.txt', 'r') as f:

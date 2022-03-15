@@ -13,18 +13,18 @@ class ModCog(commands.Cog, name='Moderation'):
     @commands.has_permissions(manage_messages=True)
     async def staffcommands(self, ctx):
         embed = discord.Embed(title="Staff Commands", description="Commands for staff", color=0xc0d4ff)
-        embed.add_field(name="m!clear <amount>",
+        embed.add_field(name="clear <amount>",
                         value="Purges a specified amount of messages (5 if no specification).", inline=False)
-        embed.add_field(name="m!ban <member id or mention>", value="Bans the specified member from the guild.",
+        embed.add_field(name="ban <member id or mention>", value="Bans the specified member from the guild.",
                         inline=False)
-        embed.add_field(name="m!softban <member id or mention>", value="Bans then immediately unbans the specified user from the guild.")
-        embed.add_field(name="m!unban <member>", value="Unbans a member from the server.", inline=False)
-        embed.add_field(name="m!giveroleall <rolename>", value="Gives all members in the guild a specified role.")
-        embed.add_field(name="m!kick <member id or mention>", value="Kicks a member from the guild.",
+        embed.add_field(name="softban <member id or mention>", value="Bans then immediately unbans the specified user from the guild.")
+        embed.add_field(name="unban <member>", value="Unbans a member from the server.", inline=False)
+        embed.add_field(name="giveroleall <rolename>", value="Gives all members in the guild a specified role.")
+        embed.add_field(name="kick <member id or mention>", value="Kicks a member from the guild.",
                         inline=False)
-        embed.add_field(name="m!mute <member id or mention>", value="Mutes a member from the guild.",
+        embed.add_field(name="mute <member id or mention>", value="Mutes a member from the guild.",
                         inline=False)
-        embed.add_field(name="m!unmute <member name or mention>", value="Unmutes a member from the guild.", inline=False)
+        embed.add_field(name="unmute <member name or mention>", value="Unmutes a member from the guild.", inline=False)
 
         await ctx.author.send(embed=embed)
         await ctx.message.reply("Sent you a DM containing staff commands!", mention_author = False)
@@ -170,9 +170,7 @@ class ModCog(commands.Cog, name='Moderation'):
             'Commands.Information',
             'Commands.Fun',
             'Commands.Gambling',
-            'Commands.Racing',
-            'Commands.Fishing',
-            'Commands.Start']
+            'Commands.School']
 
         embed = discord.Embed(title="Updating Extensions...", color=0xc0d4ff)
 
@@ -187,7 +185,7 @@ class ModCog(commands.Cog, name='Moderation'):
                 extension = "Commands.Moderation"
             elif extension.lower() == "utility":
                 extension = "Commands.Utility"
-            elif extension.lower() == "information":
+            elif extension.lower() == "information" or extension.lower() == "info":
                 extension = "Commands.Information"
             elif extension.lower() == "fun":
                 extension = "Commands.Fun"
@@ -233,7 +231,7 @@ class ModCog(commands.Cog, name='Moderation'):
                     await asyncio.sleep(0.2)
                     await discord.Message.edit(msg, embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=['decimate'])
     @commands.check(is_owner)
     async def banall(self, ctx):
         def check(m):

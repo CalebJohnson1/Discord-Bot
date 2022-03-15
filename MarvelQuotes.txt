@@ -71,3 +71,12 @@
 > "I love you. And I can't wait to be Mrs. Osborn. Oh, and Harry? Make sure you lock the door behind you. It'd be hard to explain the glider and stuff." name: **Lily Hollister**
 > "Humans. They are not the cowering wretches we were promised. They stand. They are unruly, and therefore cannot be ruled. To challenge them... is to court Death." name: **The Other**
 > "The Tesseract has awakened. It is on a little world, a human world. They would wield its power, but our ally knows its workings as they never will. He is ready to lead, and our force, our Chitauri, will follow. The world will be his, the universe, yours. And the humans, what can they do, but burn?" name: **The Other**
+> "I pretend nothing! I am SUPREME!! In my native realm I WAS the universe!" name: **Beyonder**
+> "What the heck... for a guy who's still basically omnipotent, I'm exhausted!" name: **Beyonder**
+> "I am from beyond. I come from beyond to your small planet to comprehend your species' strange needs and desires." name: **Beyonder**
+> "I am from beyond! Slay your enemies and all you desire shall be yours! Nothing you dream of is impossible for me to accomplish!" name: **Beyonder**
+> "Fabulous. Now I'm in trouble, too. This has to have happened for a reason. I saved one life. Does it stop there or do I go on? Maybe this is what I've been waiting for. Maybe I'm finally part of something... bigger." name: **Kamala Khan (Ms. Marvel)**
+> "Wait a minute. I have super-powers. I saved somebody's life on Friday. I am 911! But -- everybody's expecting Ms. Marvel. Ms. Marvel from the news. With the hair and the spandex and the Avengers swag. Not a sixteen-year-old brown girl with a 9 pm curfew. Too late for second thoughts. Don't worry, Bruno... help is on the way." name: **Kamala Khan (Ms. Marvel)**
+> "You know those days you sometimes have? The days that seem totally ordinary when you wake up, but by the time you go to sleep that night, your whole life is divided into before that day and after that day? This is one of those days." name: **Kamala Khan (Ms. Marvel)**
+> "Something's wrong with the Vision and he's lying about me and they wouldn't listen and they threw me out and -- and -- and you can be happy now!" name: **Kamala Khan (Ms. Marvel)**
+> "The Cadets and I went to bust some kid who was planning to melt his own high school and I was totally cool with it but then I found out this kid is my friend and he hasn't actually done anything wrong yet and now I don't know what to do" name: **Kamala Khan (Ms. Marvel)**

@@ -1,4 +1,6 @@
 import random
+import randfacts
+from jokeapi import Jokes
 
 import discord
 from discord.ext import commands
@@ -8,44 +10,43 @@ class Fun(commands.Cog, name="Fun.py"):
         self.bot = bot
 
     @commands.command(name='quote', aliases=["randomquote", "quotes"],
-    usage='m!quote',
+    usage='quote',
     description='Get a random quote!')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def quote(self, ctx):
         with open("Quotes.txt", "r") as m:
-            quotes = random.choice(m.readlines())
-            await ctx.message.reply(quotes)
+            quote = random.choice(m.readlines())
+            embed = discord.Embed(title="Quote", description = f'***{quote}***', color=0xc0d4ff)
+            await ctx.message.reply(embed=embed, mention_author = False)
 
-    @commands.command(name='fact', aliases=["randomfact","facts"],
-    usage='m!fact',
-    description='Get a random fact!')
+    @commands.command(name='fact', aliases=["randfact", "randomfact","facts"],
+    usage='fact',
+    description='Generate a random fact from the internet')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def fact(self, ctx):
-        with open("Facts.txt", "r") as f:
-            facts = random.choice(f.readlines())
-            await ctx.message.reply(facts, mention_author = False)
-
-    @commands.command(name='pokemonfact',
-    usage='m!pokemonfact',
-    description='Get a random Pokémon fact!')
-    @commands.cooldown(1, 1, commands.BucketType.user)
-    async def pokemonfact(self, ctx):
-        with open("PokemonFacts.txt", "r") as p:
-            pokemonfacts = random.choice(p.readlines())
-            await ctx.message.reply(pokemonfacts, mention_author = False)
+        fact = randfacts.get_fact()
+        embed = discord.Embed(title="Fact", description = f'***{fact}***', color=0xc0d4ff)
+        embed.set_footer(text="Disclaimer: Facts are not guaranteed to be true.")
+        await ctx.message.reply(embed=embed, mention_author = False)
 
     @commands.command(name='joke', aliases=["jokes"],
-    usage='m!joke',
-    description='Get a random joke!')
+    usage='joke',
+    description='Generates a random joke from the internet')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def joke(self, ctx):
-        with open("Jokes.txt", "r") as j:
-            jokes = random.choice(j.readlines())
-            await ctx.message.reply(jokes, mention_author = False)
-            return
+        disclaimers = ['If you find a joke offensive, please ignore it and move on', 'Do not take any of these jokes seriously', 'Might be a programming joke. If you understand it, congratulations!', 'Sorry if the joke is bad']
+        j = Jokes()
+        joke = j.get_joke(response_format = 'txt', blacklist = ['racist'])
+        embed = discord.Embed(title="Joke", description = f'**{joke}**', color=0xc0d4ff)
+        embed.set_footer(text=f'Disclaimer: {random.choice(disclaimers)}')
+        await ctx.message.reply(embed=embed, mention_author = False)
+
+    @joke.error
+    async def joke_error(self, ctx, error):
+        await ctx.send(error)
 
     @commands.command(name='marvelQuote', aliases=["mq", "mquote"],
-    usage='m!marvelQuote',
+    usage='marvelQuote',
     description='Get a quote from the Marvel comics!')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def marvelQuote(self, ctx):
@@ -58,12 +59,12 @@ class Fun(commands.Cog, name="Fun.py"):
             await ctx.message.reply(embed=embed, mention_author = False)
             return
 
-    @commands.command(name='8ball', usage='m!8ball <question>',
+    @commands.command(name='8ball', usage='8ball <question>',
     description='This fortune telling Magic 8-Ball will answer any of your questions.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def _8ball(self, ctx, question = None):
         if question is None:
-            await ctx.message.reply("Please input a question.\nUsage: **m!8ball <question>**")
+            await ctx.message.reply("Please input a question.\nUsage: **8ball <question>**")
             return
 
         member = ctx.author.display_name
@@ -93,7 +94,7 @@ class Fun(commands.Cog, name="Fun.py"):
         await ctx.message.reply(f"{random.choice(responses)}")
 
     @commands.command(name='generate', aliases=["gu", "generateusername"],
-    usage='m!generate',
+    usage='generate',
     description='Generates a random username.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def generate(self, ctx):
@@ -108,24 +109,24 @@ class Fun(commands.Cog, name="Fun.py"):
         await ctx.message.reply(f"Generated Username: {firstword.title()}{secondword.title()}", mention_author = False)
 
     @commands.command(name='say', aliases=['speak'],
-    usage='m!say <message>',
+    usage='say <message>',
     description='Speak as the bot!',)
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def say(self, ctx, *, message=None):
         if message is None:
-            await ctx.message.reply("Please input a message.\nUsage: **m!say** <message>", mention_author = False)
+            await ctx.message.reply("Please input a message.\nUsage: **say** <message>", mention_author = False)
             return
 
         await discord.Message.delete(ctx.message, delay=None)
         await ctx.message.reply(message.capitalize(), mention_author = False)
 
     @commands.command(name='reverse', aliases=["inverse", 'back'],
-    usage='m!reverse <message>',
+    usage='reverse <message>',
     description='Reverses the given message.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def reverse(self, ctx, *, message = None):
         if message is None:
-            await ctx.message.reply("Please input a message.\nUsage: **m!reverse** <message>", mention_author = False)
+            await ctx.message.reply("Please input a message.\nUsage: **reverse** <message>", mention_author = False)
             return
 
         await ctx.message.reply(message[::-1], mention_author = False)

@@ -12,7 +12,7 @@ class EventHandler(commands.Cog, name="EventHandler.py"):
         self.bot = bot
 
     @commands.command(name='startevent', aliases=["event"],
-    usage='m!startevent',
+    usage='startevent',
     description='Interactively set up a timed event of your choice within a server.')
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 1, commands.BucketType.user)

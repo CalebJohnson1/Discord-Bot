@@ -1,7 +1,10 @@
 import asyncio
+from calendar import timegm
 import random
 import re
 import os
+from sqlite3 import Timestamp
+import datetime
 
 import discord
 from discord.ext import commands
@@ -42,43 +45,41 @@ class Utility(commands.Cog, name="Utility.py"):
                               color=0xc0d4ff)
         embed.add_field(name="*Information*", value="info, avatar, members",
                         inline=False)
-        embed.add_field(name="*Utility*", value="help, suggest, ping, giveroleall, removeroleall, servericon, startevent")
+        embed.add_field(name="*Utility*", value="help, suggest, giveroleall, removeroleall, servericon, ping, startevent")
         embed.add_field(name="*Economy*", value="**start**, credits, points, race, fish", inline=False)
         # embed.add_field(name="*Gambling*", value="Coming Soon", inline=False)
-        embed.add_field(name="*Fun*", value="fact, pokemonfact, joke, quote, 8ball, generate, encounter,"
+        embed.add_field(name="*Fun*", value="fact, joke, quote, marvelquote, 8ball, generate, encounter,"
                                           " say, reverse", inline=False)
         await ctx.message.reply(embed=embed, mention_author = False)
 
     @commands.command(name='suggest', aliases=["suggestion"],
-    usage='m!suggest <message>',
-    description='Allows you to send in a suggestion to the bot.')
+    usage='suggest <message>',
+    description='Allows you to input a suggestion to the bot.')
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def suggest(self, ctx, *, message=None):
+        print(ctx.author.created_at)
+
         if message is None:
-            await ctx.message.reply("Please input a message to suggest.\nUsage: **m!suggest <message>**")
+            await ctx.message.reply("Please input a message to suggest.\nUsage: **::suggest <message>**")
             return
-    
+
         embed = discord.Embed(title="Suggestion", description=message.title(), color=0xc0d4ff)
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.set_footer(text=f"ID: {ctx.author.id}")
 
-        channel = self.bot.get_channel(670470975929712640)
+        channel = self.bot.get_channel(881778673215221791)
         msg = await channel.send(embed=embed)
         await msg.add_reaction(":greencheck:702359954740478053")
         await msg.add_reaction(":redx:702359966870405160")
-        msg = await ctx.message.reply("Thank you, your suggestion has been received!")
+        msg = await ctx.message.reply("Thank you, your suggestion has been received!", )
         await discord.Message.delete(msg, delay=3)
 
-    @commands.command(name='ping', pass_context=True,
-    usage='m!ping',
-    description='Checks the bots current latency (ping).')
-    @commands.cooldown(1, 1, commands.BucketType.user)
-    async def ping(self, ctx):
-        ping = round(self.bot.latency * 1000)
-        await ctx.message.reply(f"Ping: **{ping}**ms", mention_author = False)
+    @suggest.error
+    async def suggestion_error(self, ctx, error):
+        await ctx.send(error)
 
     @commands.command(name='servericon', aliases=["gi", "guildicon"],
-    usage='m!servericon',
+    usage='servericon',
     description='Displays the servers icon')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def servericon(self, ctx):
@@ -88,9 +89,10 @@ class Utility(commands.Cog, name="Utility.py"):
         await ctx.message.reply(embed=embed, mention_author = False)
 
     @commands.command(name='giveroleall', aliases=["gra"],
-    usage='m!giveroleall <role>',
+    usage='giveroleall <role>',
     description='Gives the specified role to all members in the server.\nCase sensitive')
     @commands.has_permissions(administrator=True)
+    @commands.cooldown(1, 300, commands.BucketType.guild)
     async def giveroleall(self, ctx, *, rolename):
         role = discord.utils.get(ctx.guild.roles, name=rolename)
         if not role in ctx.guild.roles:
@@ -98,7 +100,7 @@ class Utility(commands.Cog, name="Utility.py"):
             return
 
         if role > ctx.author.top_role:
-            await ctx.message.reply("Access denied.", mention_author = False)
+            await ctx.message.reply("Permission denied.", mention_author = False)
             return
 
         userswithrole = 0
@@ -138,9 +140,10 @@ class Utility(commands.Cog, name="Utility.py"):
         await msg.edit(embed=embed)
 
     @commands.command(name='removeroleall', aliases=["rra"],
-    usage='m!removeroleall <role>',
+    usage='removeroleall <role>',
     description='Removes the specified role from all members in the server.\nCase sensitive')
     @commands.has_permissions(administrator=True)
+    @commands.cooldown(1, 300, commands.BucketType.guild)
     async def removeroleall(self, ctx, *, rolename):
         role = discord.utils.get(ctx.guild.roles, name=rolename)
         if not role in ctx.guild.roles:
@@ -148,7 +151,7 @@ class Utility(commands.Cog, name="Utility.py"):
             return
 
         if role > ctx.author.top_role:
-            await ctx.message.reply("Access denied. You cannot grant a role higher than your top role.", mention_author = False)
+            await ctx.message.reply("Permission denied. You cannot grant a role higher than your top role.", mention_author = False)
             return
 
         userswithrole = 0
@@ -187,7 +190,9 @@ class Utility(commands.Cog, name="Utility.py"):
         embed.set_footer(text=f"Finished removing {rolename} role from members")
         await msg.edit(embed=embed)
 
-    @commands.command(name='book', aliases=["randbook", "randombook"])
+    @commands.command(name='book', aliases=["randbook", "randombook"],
+    usage='book',
+    description='Picks a random book for you to read!')
     async def book(self, ctx):
         verbs = ['I wish for', 'I choose', "I've picked", "I've selected"]
         randVerb = random.choice(verbs)
@@ -212,7 +217,10 @@ class Utility(commands.Cog, name="Utility.py"):
         author = books[randomBook]
         await ctx.message.reply(f"{randVerb} {randomBook} by {author} to be the next for book you to read.", mention_author = False)
 
-    @commands.command(name='ping', aliases=['pingwebsite'])
+    @commands.command(name='ping', aliases=['pingwebsite'],
+    usage='ping <website>',
+    description='Check to view the status of a website.')
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def ping(self, ctx, website):
         response = os.system("ping -c 1 " + website)
 

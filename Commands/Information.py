@@ -6,7 +6,7 @@ class Information(commands.Cog, name="Information.py"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='info', usage='m!info <mention>',
+    @commands.command(name='info', usage='info <mention>',
     description='Retrieve information about a user.')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def info(self, ctx, *, member: discord.Member = None):
@@ -14,7 +14,7 @@ class Information(commands.Cog, name="Information.py"):
             member = ctx.author
 
         if member.top_role == member.guild.default_role:
-            embed = discord.Embed(color=0xc0d4ff)
+            embed = discord.Embed(color=0xFFFFFF)
         else:
             embed = discord.Embed(color=member.color)
 
@@ -34,7 +34,7 @@ class Information(commands.Cog, name="Information.py"):
         await ctx.message.reply(embed=embed, mention_author = False)
 
     @commands.command(name='avatar', aliases=["pfp"],
-    usage='m!avatar <mention>',
+    usage='avatar <mention>',
     description='Gets the specified users avatar.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def avatar(self, ctx, *, member: discord.Member = None):
@@ -56,10 +56,10 @@ class Information(commands.Cog, name="Information.py"):
 
     @avatar.error
     async def avatar_error(self, ctx, error):
-        errormsg = await ctx.message.reply("Invalid user, usage: <m!avatar <username>", mention_author = False)
+        errormsg = await ctx.message.reply("Invalid user, usage: <avatar <username>", mention_author = False)
         await discord.Message.delete(errormsg, delay=5)
 
-    @commands.command(name='members', usage='m!members',
+    @commands.command(name='members', usage='members',
     description='Displays an embed showing all members, humans, bots, and offline/offline users in the server.')
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def members(self, ctx):
@@ -83,7 +83,6 @@ class Information(commands.Cog, name="Information.py"):
         embed.add_field(name="Offline", value=str(offline), inline=True)
 
         await ctx.message.reply(embed=embed, mention_author = False)
-
 
 def setup(bot):
     bot.add_cog(Information(bot))
