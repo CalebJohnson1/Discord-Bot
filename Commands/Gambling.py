@@ -5,6 +5,8 @@ import sqlite3
 import discord
 from discord.ext import commands
 
+gambleColor = 0xFFFFF0
+
 class Gambling(commands.Cog, name="Gambling.py"):
     def __init__(self, bot):
         self.bot = bot
@@ -14,6 +16,10 @@ class Gambling(commands.Cog, name="Gambling.py"):
     description='Roll a 100-sided dice! If the dice rolls over 55, you win.')
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def __55__(self, ctx, amount):
+        def check(m):
+            msgchannel = ctx.message.channel
+            return m.author == ctx.author and m.channel == msgchannel
+
         if int(amount) < 1:
             await ctx.message.reply("Please input an amount above 0.", mention_author = False)
             return
@@ -47,7 +53,14 @@ class Gambling(commands.Cog, name="Gambling.py"):
             val = (int(balance) + int(amount), str(ctx.author.id))
         elif dice == 55:
             val = (int(balance), str(ctx.author.id))
-            # Ask the user if they'd like to reroll again
+            invalidRoll = await ctx.bot.wait_for('message', check=check, timeout=120)
+            if invalidRoll.content.lower() == 'y' or 'yes' in invalidRoll.content.lower():
+                # Finish this some time, not important rn
+                # Just put the dice roll into a seperate function and call it here, will make it much easier
+                # will need to rewrite how some of it works.
+                return
+            else:
+                return
         else:
             val = (int(balance) - int(amount), str(ctx.author.id))
         cursor.execute(sql, val)
@@ -122,8 +135,6 @@ class Gambling(commands.Cog, name="Gambling.py"):
         except Exception as e:
             print(e)
             return
-
-gambleColor = 0xFFFFF0
 
 def setup(bot):
     bot.add_cog(Gambling(bot))

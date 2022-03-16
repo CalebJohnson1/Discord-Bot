@@ -217,7 +217,7 @@ class Utility(commands.Cog, name="Utility.py"):
         author = books[randomBook]
         await ctx.message.reply(f"{randVerb} {randomBook} by {author} to be the next for book you to read.", mention_author = False)
 
-    @commands.command(name='ping', aliases=['pingwebsite'],
+    '''@commands.command(name='ping', aliases=['pingwebsite'],
     usage='ping <website>',
     description='Check to view the status of a website.')
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -233,7 +233,7 @@ class Utility(commands.Cog, name="Utility.py"):
 
         embed = discord.Embed(title=website.title(), color=statusColor)
         embed.add_field(name="Status", value=statusValue)
-        await ctx.message.reply(embed=embed, mention_author = False)
+        await ctx.message.reply(embed=embed, mention_author = False)'''
 
 def setup(bot):
     bot.add_cog(Utility(bot))
