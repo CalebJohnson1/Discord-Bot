@@ -9,6 +9,8 @@ def read_token():
 TOKEN = read_token()
 
 client = commands.Bot(command_prefix=['::'], case_insensitive=True)
+# if bot is in hundreds of servers and needs to be sharded (split into multiple functions), remove above code and implement below code
+# client = commands.AutoShardedBot(shard_count = 2, command_prefix=['::'], case_insensitive = True)
 client.remove_command('help')
 
 @client.event

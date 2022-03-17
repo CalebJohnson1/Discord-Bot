@@ -88,6 +88,24 @@ class School(commands.Cog, name='School.py'):
                                 await ctx.send('%5s %5s %5s %5s %5s %5s' % (m, n, p, q, r, out))
                                 return
 
-                                
+    # Shift Cipher
+    def shift(p, k):
+        return (p + k) % 256
+
+    def shiftCipher(k, plaintext):
+        def shiftClosure(p):
+            return (p + k) % 256
+        return map(shiftClosure, plaintext)
+
+    def linear(p, m, k):
+        def linearClosure():
+            return (p * m * k) % 256
+        return linearClosure()
+
+    def linearCipher(m, k, plaintext):
+        def linearClosure(p):
+            return (p * m * k) % 256
+        return map(linearClosure, plaintext)
+                 
 def setup(bot):
     bot.add_cog(School(bot))
