@@ -4,7 +4,6 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-
 class ModCog(commands.Cog, name='Moderation'):
     def __init__(self, bot):
         self.bot = bot
@@ -27,7 +26,7 @@ class ModCog(commands.Cog, name='Moderation'):
         embed.add_field(name="unmute <member name or mention>", value="Unmutes a member from the guild.", inline=False)
 
         await ctx.author.send(embed=embed)
-        await ctx.message.reply("Sent you a DM containing staff commands!", mention_author = False)
+        await ctx.message.reply("Sent you a DM containing staff commands.", mention_author = False)
 
     @commands.command()
     @commands.has_permissions(ban_members=True)

@@ -486,5 +486,9 @@ class EventHandler(commands.Cog, name="EventHandler.py"):
             await ctx.message.reply(f"Connection has been lost, {event.content} event has been removed", mention_author = False)
             await discord.Message.delete(msg, delay=0)
 
+    @startevent.error
+    async def startevent_error(self, ctx, error):
+        await ctx.send(error)
+        
 def setup(bot):
     bot.add_cog(EventHandler(bot))
