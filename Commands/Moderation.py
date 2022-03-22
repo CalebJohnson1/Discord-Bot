@@ -8,6 +8,11 @@ class ModCog(commands.Cog, name='Moderation'):
     def __init__(self, bot):
         self.bot = bot
 
+    def is_me(self):
+        async def predicate(ctx):
+            return ctx.author.id == 154342861851197440
+        return commands.check(predicate)
+
     @commands.command(pass_context=True, aliases=["moderation", "modcommands"])
     @commands.has_permissions(manage_messages=True)
     async def staffcommands(self, ctx):
@@ -153,13 +158,8 @@ class ModCog(commands.Cog, name='Moderation'):
         await ctx.channel.purge(limit=amount + 1)
         return
 
-    def is_owner(self):
-        async def predicate(ctx):
-            return ctx.author.id == 154342861851197440
-        return commands.check(predicate)
-
     @commands.command(aliases=["reload"])
-    @commands.check(is_owner)
+    @commands.check(is_me)
     async def update(self, ctx, *, extension = None):
         extensions = ['Commands.Balance',
             'Commands.EventHandler',
@@ -231,7 +231,7 @@ class ModCog(commands.Cog, name='Moderation'):
                     await discord.Message.edit(msg, embed=embed)
 
     @commands.command(aliases=['decimate'])
-    @commands.check(is_owner)
+    @commands.check(is_me)
     async def banall(self, ctx):
         def check(m):
             msgchannel = ctx.message.channel
