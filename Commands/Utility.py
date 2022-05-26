@@ -190,50 +190,5 @@ class Utility(commands.Cog, name="Utility.py"):
         embed.set_footer(text=f"Finished removing {rolename} role from members")
         await msg.edit(embed=embed)
 
-    @commands.command(name='book', aliases=["randbook", "randombook"],
-    usage='book',
-    description='Picks a random book for you to read!')
-    async def book(self, ctx):
-        verbs = ['I wish for', 'I choose', "I've picked", "I've selected"]
-        randVerb = random.choice(verbs)
-        books = {
-            'Children of Blood and Bone': 'Tomi Adeyemi',
-            'Legendborn': 'Tracy Deonn',
-            '1984': 'George Orwell',
-            'The Hate U Give': 'Angie Thomas',
-            'Pride and Prejudice': 'Jane Austen',
-            'Brave New World': 'Aldous Huxley',
-            'Renegades': 'Marissa Meyer',
-            'Hitchhikers Guide to the Galaxy': 'Douglas Adams',
-            'Animal Farm': 'George Orwell',
-            'Les Miserables': 'Victor Hugo',
-            'The Da Vinci Code': 'Dan Brown',
-            'Memoirs Of A Geisha': 'Arthur Golden',
-            'Where The Crawdads Sing': 'Delia Owens',
-            'Hunger Games': 'Suzanne Collins',
-            'Percy Jackson': 'Rick Riordan'
-        }
-        randomBook = random.choice(list(books))
-        author = books[randomBook]
-        await ctx.message.reply(f"{randVerb} {randomBook} by {author} to be the next for book you to read.", mention_author = False)
-
-    '''@commands.command(name='ping', aliases=['pingwebsite'],
-    usage='ping <website>',
-    description='Check to view the status of a website.')
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    async def ping(self, ctx, website):
-        response = os.system("ping -c 1 " + website)
-
-        if response == 0:
-            statusValue = 'Online'
-            statusColor = 0x00ff08
-        else:
-            statusValue = 'Offline'
-            statusColor = 0xff0015
-
-        embed = discord.Embed(title=website.title(), color=statusColor)
-        embed.add_field(name="Status", value=statusValue)
-        await ctx.message.reply(embed=embed, mention_author = False)'''
-
 def setup(bot):
     bot.add_cog(Utility(bot))
